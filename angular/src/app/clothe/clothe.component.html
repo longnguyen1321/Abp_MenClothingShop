@@ -1,0 +1,135 @@
+<div class = "card">
+    <div class = "card-header">
+        <div class = "row">
+            <div class = "col col-md-6">
+                <h5 class = "card-title">
+                    {{ '::Menu:Clothes' | abpLocalization }}
+                </h5>
+            </div>
+            <div class="text-end col col-md-6">
+                <div class = "text-lg-end pt-2">
+                    <button *abpPermission="'MenClothingShop.Clothes.Create'" id="create" class="btn btn-primary" type ="button" (click)="createClothe()">
+                        <i class="fa fa-plus mr-1"></i>
+                        <span>{{ "::NewClothe" | abpLocalization}}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "card-body">
+        <ngx-datatable [rows]="clothe.items" [count]="clothe.totalCount" [list]="list" default>
+            <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <div ngbDropdown container="body" class="d-inline-block">
+                    <button
+                        class="btn btn-primary btn-sm dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        ngbDropdownToggle
+                    >
+                        <i class="fa fa-cog mr-1"></i>{{ '::Actions' | abpLocalization }}
+                    </button>
+                    <div ngbDropdownMenu>
+                        <button *abpPermission="'MenClothingShop.Clothes.Edit'" ngbDropdownItem (click)="editClothe(row.id)">
+                            {{ '::Edit' | abpLocalization }}
+                        </button>
+
+                        <button *abpPermission="'MenClothingShop.Clothes.Delete'" ngbDropDownItem (click)="deleteClothe(row.id)">
+                            {{ '::Delete' | abpLocalization }}
+                        </button>
+                    </div>
+                    </div>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column [name] = "'::TenMH' | abpLocalization" prop="tenMH"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::SizeMH' | abpLocalization" prop = "sizeMH"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::SoLuongMH' | abpLocalization" prop = "soLuongMH"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::LoaiMH' | abpLocalization" prob = "loaiMH">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ '::Enum:ClotheType:' + row.loaiMH | abpLocalization }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::ChatLieuMH' | abpLocalization" prob = "chatLieuMH">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ '::Enum:ClotheMaterial:' + row.chatLieuMH | abpLocalization }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::GiaMH' | abpLocalization" prop = "giaMH"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::SLTonKhoToiThieu' | abpLocalization" prop = "slTonKhoToiThieu"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::AnhMH' | abpLocalization" prop = "anhMH"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::MoTaMH' | abpLocalization" prop = "moTaMH"></ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+</div>
+
+<abp-modal [(visible)]="isModalOpen">
+    <ng-template #abpHeader>
+      <h3>{{ (selectedClothe.id ? '::Edit' : '::NewClothe') | abpLocalization }}</h3>
+    </ng-template>
+  
+    <ng-template #abpBody> 
+        <form [formGroup]="form" (ngSubmit)="save()">
+            <div class="form-group">
+                <label for="clothe-name">Tên</label><span> * </span>
+                <input type="text" id="clothe-name" class="form-control" formControlName="tenMH" autofocus />
+            </div>
+            <div class="form-group">
+                <label for="clothe-size">Kích cỡ</label><span> * </span>
+                <input type="text" id="clothe-size" class="form-control" formControlName="sizeMH" />
+            </div>
+            <div class="form-group">
+                <label for="clothe-quantity">Số lượng</label><span> * </span>
+                <input type="number" id="clothe-quantity" class="form-control" formControlName="soLuongMH" />
+            </div>
+            <div class="form-group">
+                <label for="clothe-type">Loại</label><span> * </span>
+                <select class="form-control" id="clothe-type" formControlName="loaiMH">
+                    <option [ngValue]="null">Chọn 1 loại mặt hàng</option>
+                    <option [ngValue]="type.value" *ngFor="let type of clotheTypes">{{ type.key }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="clothe-material">Chất liệu</label><span> * </span>
+                <select class="form-control" id="clothe-material" formControlName="chatLieuMH">
+                    <option [ngValue]="null">Chọn 1 chất liệu</option>
+                    <option [ngValue]="material.value" *ngFor="let material of clotheMaterials">{{ material.key }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="clothe-price">Giá</label><span> * </span>
+                <input type="number" id="clothe-price" class="form-control" formControlName="giaMH" />
+            </div>
+            <div class="form-group">
+                <label for="clothe-min-stock">Số lượng tồn kho tối thiểu</label><span> * </span>
+                <input type="number" id="clothe-min-stock" class="form-control" formControlName="slTonKhoToiThieu" />
+            </div>
+            
+            <div class="form-group">
+                <label for="clothe-picture">Chọn ảnh</label><span> * </span>
+                <input type="text" id="clothe-name" class="form-control" formControlName="anhMH" />
+            </div> 
+            <div class="form-group">
+                <label for="clothe-description">Giới thiệu</label><span> * </span>
+                <input type="text" id="clothe-description" class="form-control" formControlName="moTaMH" />
+            </div>
+        </form>
+    </ng-template>
+  
+    <ng-template #abpFooter>
+      <button type="button" class="btn btn-secondary" abpClose>
+        {{ '::Close' | abpLocalization }}
+      </button>
+
+      <button class="btn-primary" (click)="save()" [disabled]="form.invalid">
+        <i class="fa fa-check mr-1"></i>
+        {{ '::Save' | abpLocalization }}
+      </button>
+    </ng-template>
+  </abp-modal>
+<!--
+    *abpPermission="'MenClothingShop.Clothes.Create'"
+    *abpPermission="'MenClothingShop.Clothes.Edit'"
+    *abpPermission="'MenClothingShop.Clothes.Delete'"
+-->
+  
