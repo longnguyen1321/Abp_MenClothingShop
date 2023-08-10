@@ -1,1 +1,33 @@
-<p>export works!</p>
+<p>export works!</p><!--
+<div class = "card">
+    <div class = "card-header">
+        <div class ="row">
+            <div class = "col col-md-6">
+                <h5 class = "card-title">
+                    {{'::Menu:Exports' | abpLocalization}}
+                </h5>
+            </div>
+        </div>
+    </div>
+    <div class = "card-body">
+        <ngx-datatable [rows]="clothe.items" [count]="clothe.totalCount" [list]="list" default>
+            <ngx-datatable-column [name] = "'::TenMH' | abpLocalization" prop="tenMH"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::SizeMH' | abpLocalization" prop = "sizeMH"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::SoLuongMH' | abpLocalization" prop = "soLuongMH"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::LoaiMH' | abpLocalization" prob = "loaiMH">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ '::Enum:ClotheType:' + row.loaiMH | abpLocalization }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::ChatLieuMH' | abpLocalization" prob = "chatLieuMH">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ '::Enum:ClotheMaterial:' + row.chatLieuMH | abpLocalization }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::GiaMH' | abpLocalization" prop = "giaMH"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::SLTonKhoToiThieu' | abpLocalization" prop = "slTonKhoToiThieu"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::AnhMH' | abpLocalization" prop = "anhMH"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::MoTaMH' | abpLocalization" prop = "moTaMH"></ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+</div> -->

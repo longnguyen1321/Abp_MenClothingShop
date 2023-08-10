@@ -34,7 +34,7 @@ function configureRoutes(routesService: RoutesService) {
         name: '::Menu:Exports',
         parentName: '::Menu:MenClothingShop',
         layout: eLayoutType.application,
-        requiredPolicy: 'MenClothingShop.'
+        requiredPolicy: 'MenClothingShop.Exports'
       },
     ]);
   };

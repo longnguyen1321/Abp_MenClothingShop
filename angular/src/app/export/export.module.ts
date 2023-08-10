@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import { ExportRoutingModule } from './export-routing.module';
 import { ExportComponent } from './export.component';
+import { SharedModule } from '../shared/shared.module';
+
 
 
 @NgModule({
@@ -10,7 +10,7 @@ import { ExportComponent } from './export.component';
     ExportComponent
   ],
   imports: [
-    CommonModule,
+    SharedModule,
     ExportRoutingModule
   ]
 })

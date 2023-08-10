@@ -6,7 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 const routes: Routes = [{ path: '', component: ExportComponent }];
 
 @NgModule({
-  declarations: [ExportComponent],
-  imports: [SharedModule, ExportRoutingModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class ExportRoutingModule { }
