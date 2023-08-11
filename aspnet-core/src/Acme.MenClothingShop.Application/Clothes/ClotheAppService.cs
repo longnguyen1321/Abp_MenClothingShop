@@ -13,7 +13,7 @@ namespace Acme.MenClothingShop.Clothes
     public class ClotheAppService : CrudAppService<Clothe, ClotheDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateClotheDto>, IClotheAppService
     {
         public ClotheAppService(IRepository<Clothe, Guid> repository) : base(repository)
-        {
+        { 
             GetPolicyName = MenClothingShopPermissions.Clothes.Default;
             GetListPolicyName = MenClothingShopPermissions.Clothes.Default;
             CreatePolicyName = MenClothingShopPermissions.Clothes.Create;

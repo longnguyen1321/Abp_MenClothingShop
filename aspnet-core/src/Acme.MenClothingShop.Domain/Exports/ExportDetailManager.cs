@@ -13,7 +13,6 @@ namespace Acme.MenClothingShop.Exports
 {
     public class ExportDetailManager: DomainService
     {
-        private readonly IExportDetailRepository _exportDetailRepository;
 
         private readonly IRepository<Clothe, Guid> _clotheRepository;
 
@@ -44,7 +43,7 @@ namespace Acme.MenClothingShop.Exports
         public async Task<Clothe> UpdateInStoreClothe([NotNull] Guid maMH, [NotNull] int soLuongDaXuat, [NotNull] String operation)
         {
             Check.NotNull(maMH, nameof(maMH));
-
+            
             var queriedClothe = await _clotheRepository.FindAsync(c => c.Id == maMH);
 
             if(operation == "add")

@@ -1,5 +1,7 @@
 ﻿using Acme.MenClothingShop.Clothes;
 using Acme.MenClothingShop.Exports;
+using Acme.MenClothingShop.Imports;
+using Acme.MenClothingShop.Suppliers;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -46,6 +48,12 @@ public class MenClothingShopDbContext :
     public DbSet<Export> Exports { get; set; }
 
     public DbSet<ExportDetail> ExportDetails { get; set; }
+
+    public DbSet<Import> Imports { get; set; }
+
+    public DbSet<ImportDetail> ImportDetails { get; set; }
+
+    public DbSet<Supllier> Suplliers { get; set; }
 
     //Identity
     public DbSet<IdentityUser> Users { get; set; }
@@ -103,6 +111,29 @@ public class MenClothingShopDbContext :
             c.ConfigureByConvention();
             c.HasOne<Export>().WithMany().HasForeignKey(y => y.ExportId).IsRequired();
             c.HasOne<Clothe>().WithMany().HasForeignKey(x => x.ClotheId).IsRequired();
+        });
+
+        builder.Entity<Supllier>(c =>
+        {
+            c.ToTable(MenClothingShopConsts.DbTablePrefix + "Suppliers", MenClothingShopConsts.DbSchema);
+            c.ConfigureByConvention();
+            c.Property(x => x.TenNCC).IsRequired().HasMaxLength(128);
+        });
+
+        builder.Entity<Import>(c =>
+        {
+            c.ToTable(MenClothingShopConsts.DbTablePrefix + "Imports", MenClothingShopConsts.DbSchema);
+            c.ConfigureByConvention();
+            c.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.UserId).IsRequired();
+        });
+
+        builder.Entity<ImportDetail>(c =>
+        {
+            c.HasKey(m => new { m.MaPN, m.MaMH });
+            c.ToTable(MenClothingShopConsts.DbTablePrefix + "ImportDetails", MenClothingShopConsts.DbSchema);
+            c.ConfigureByConvention();
+            c.HasOne<Import>().WithMany().HasForeignKey(x => x.MaPN).IsRequired();
+            c.HasOne<Clothe>().WithMany().HasForeignKey(y => y.MaMH).IsRequired();
         });
         
         //builder.Entity<YourEntity>(b =>

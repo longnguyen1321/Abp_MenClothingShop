@@ -50,6 +50,7 @@
     "Permission:Clothes.Create": "Tạo mặt hàng mới",
     "Permission:Clothes.Edit": "Cập nhập mặt hàng",
     "Permission:Clothes.Delete": "Xóa mặt hàng",
+    "Permission:Exports": "Tạo phiếu nhập",
     "Permission:Export.Create": "Tạo phiếu nhập",
     "Permission:Export.Cancel": "Hủy phiếu nhập"
   }
