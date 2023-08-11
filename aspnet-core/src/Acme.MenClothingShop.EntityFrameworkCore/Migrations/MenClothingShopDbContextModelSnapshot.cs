@@ -231,9 +231,6 @@ namespace Acme.MenClothingShop.Migrations
                     b.Property<Guid>("MaNCC")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MaPN")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("NgayNhap")
                         .HasColumnType("datetime2");
 
@@ -297,9 +294,6 @@ namespace Acme.MenClothingShop.Migrations
 
                     b.Property<string>("LienLacNCC")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("MaNCC")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenNCC")
                         .IsRequired()

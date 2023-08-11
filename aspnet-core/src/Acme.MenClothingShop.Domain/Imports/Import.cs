@@ -9,7 +9,6 @@ namespace Acme.MenClothingShop.Imports
 {
     public class Import: FullAuditedAggregateRoot<Guid>
     {
-        public Guid MaPN { get; set; }
 
         public Guid MaNCC { get; set; }
 

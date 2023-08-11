@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Acme.MenClothingShop.Migrations
 {
-    public partial class Create_Supplier_Import_ImportDetail_Entity : Migration
+    public partial class Created_Supplier_Import_ImportDetail_Entity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,6 @@ namespace Acme.MenClothingShop.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MaPN = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MaNCC = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -46,7 +45,6 @@ namespace Acme.MenClothingShop.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MaNCC = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TenNCC = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     DiaChiNCC = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LienLacNCC = table.Column<string>(type: "nvarchar(max)", nullable: true),

@@ -26,8 +26,7 @@ namespace Acme.MenClothingShop.Exports
         private Export() { }
 
         internal Export(Guid id, Guid userId, Decimal tongTienXuat, String tinhTrangPX, [NotNull] ExportReason lyDoXuat) : base(id)
-        {
-            
+        {           
             UserId = userId;
             NgayXuat = DateTime.Now;
             TongTienXuat = tongTienXuat;

@@ -9,7 +9,6 @@ namespace Acme.MenClothingShop.Suppliers
 {
     public class Supllier: AggregateRoot<Guid>
     {
-        public Guid MaNCC { get; set; }
 
         public string TenNCC { get; set; }
 

@@ -13,8 +13,8 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Acme.MenClothingShop.Migrations
 {
     [DbContext(typeof(MenClothingShopDbContext))]
-    [Migration("20230811082258_Create_Supplier_Import_ImportDetail_Entity")]
-    partial class Create_Supplier_Import_ImportDetail_Entity
+    [Migration("20230811090614_Created_Supplier_Import_ImportDetail_Entity")]
+    partial class Created_Supplier_Import_ImportDetail_Entity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -233,9 +233,6 @@ namespace Acme.MenClothingShop.Migrations
                     b.Property<Guid>("MaNCC")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("MaPN")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("NgayNhap")
                         .HasColumnType("datetime2");
 
@@ -299,9 +296,6 @@ namespace Acme.MenClothingShop.Migrations
 
                     b.Property<string>("LienLacNCC")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("MaNCC")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenNCC")
                         .IsRequired()
