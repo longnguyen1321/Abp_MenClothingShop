@@ -27,6 +27,8 @@ const routes: Routes = [
   },
   { path: 'clothes', loadChildren: () => import('./clothe/clothe.module').then(m => m.ClotheModule) },
   { path: 'exports', loadChildren: () => import('./export/export.module').then(m => m.ExportModule) },
+  { path: 'storage', loadChildren: () => import('./storage/storage.module').then(m => m.StorageModule) },
+  { path: 'imports', loadChildren: () => import('./import/import.module').then(m => m.ImportModule) },
 ];
 
 @NgModule({

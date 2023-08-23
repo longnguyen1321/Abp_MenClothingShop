@@ -1,0 +1,25 @@
+<p>storage works!</p>
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col col-md-6">
+                <h5 class="card-title">
+                  {{ '::Menu:Storage' | abpLocalization }}
+                </h5>
+            </div>
+        </div>
+    </div>
+    
+    <div class = "card-body">
+        <ngx-datatable [rows]="clotheStorage.items" [count]="clotheStorage.totalCount" [list]="list" default>
+            <ngx-datatable-column [name] = "'::TenMH' | abpLocalization" prop="tenMH"></ngx-datatable-column>
+            <ngx-datatable-column [name]="'::TonKho' | abpLocalization" prop="tonKho"></ngx-datatable-column>
+            <ngx-datatable-column [name]="'::TinhTrangMH' | abpLocalization" prop="tinhTrangMH"></ngx-datatable-column>
+            <ngx-datatable-column [name]="'::TongNhapThang' | abpLocalization" prop="tongNhapThangMH"></ngx-datatable-column>
+            <ngx-datatable-column [name]="'::TongXuatThang' | abpLocalization" prop="tongXuatThangMH"></ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+</div>
+
+
+

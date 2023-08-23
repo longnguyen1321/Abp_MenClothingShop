@@ -1,4 +1,5 @@
 import type { ExportReason } from './export-reason.enum';
+import type { EntityDto } from '@abp/ng.core';
 
 export interface CancelExportDto {
   tinhTrangPX: string;
@@ -26,7 +27,7 @@ export interface ExportDetailDto {
   thanhTienXuat: number;
 }
 
-export interface ExportDto {
+export interface ExportDto extends EntityDto<string> {
   userId?: string;
   ngayXuat?: string;
   tongTienXuat: number;

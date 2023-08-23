@@ -36,6 +36,13 @@ function configureRoutes(routesService: RoutesService) {
         layout: eLayoutType.application,
         requiredPolicy: 'MenClothingShop.Exports'
       },
+      {
+        path: '/storage',
+        name: '::Menu:Storage',
+        parentName: '::Menu:MenClothingShop',
+        layout: eLayoutType.application,
+        
+      }
     ]);
   };
 }
