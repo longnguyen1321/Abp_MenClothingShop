@@ -8,10 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Acme.MenClothingShop.Application.Contracts\Acme.MenClothingShop.Application.Contracts.csproj" />
     <ProjectReference Include="..\Acme.MenClothingShop.Domain.Shared\Acme.MenClothingShop.Domain.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
     <PackageReference Include="Volo.Abp.Emailing" Version="5.3.0" />
     <PackageReference Include="Volo.Abp.Identity.Domain" Version="5.3.0" />
     <PackageReference Include="Volo.Abp.PermissionManagement.Domain.Identity" Version="5.3.0" />

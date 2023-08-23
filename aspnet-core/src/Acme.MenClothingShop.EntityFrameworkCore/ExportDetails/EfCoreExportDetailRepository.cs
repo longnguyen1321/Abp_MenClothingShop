@@ -1,6 +1,8 @@
 ﻿using Acme.MenClothingShop.Clothes;
 using Acme.MenClothingShop.EntityFrameworkCore;
 using Acme.MenClothingShop.Exports;
+using Acme.MenClothingShop.Imports;
+using Acme.MenClothingShop.Storages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,9 +17,10 @@ namespace Acme.MenClothingShop.ExportDetails
 {
     public class EfCoreExportDetailRepository: EfCoreRepository<MenClothingShopDbContext, ExportDetail>, IExportDetailRepository
     {
-        public EfCoreExportDetailRepository(IDbContextProvider<MenClothingShopDbContext> dbContextProvider): base(dbContextProvider)
+        public  EfCoreExportDetailRepository(IDbContextProvider<MenClothingShopDbContext> dbContextProvider): base(dbContextProvider)
         {
-
+            
         }
     }
 }
+            

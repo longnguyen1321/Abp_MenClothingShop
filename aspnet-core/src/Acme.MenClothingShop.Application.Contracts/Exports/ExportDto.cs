@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Volo.Abp.Application.Dtos;
 
 namespace Acme.MenClothingShop.Exports
 {
-    public class ExportDto
+    public class ExportDto: EntityDto<Guid>
     {
         public Guid UserId { get; set; }
 

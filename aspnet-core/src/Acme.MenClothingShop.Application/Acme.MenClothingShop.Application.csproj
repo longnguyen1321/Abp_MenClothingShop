@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Acme.MenClothingShop.Domain\Acme.MenClothingShop.Domain.csproj" />
     <ProjectReference Include="..\Acme.MenClothingShop.Application.Contracts\Acme.MenClothingShop.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Acme.MenClothingShop.EntityFrameworkCore\Acme.MenClothingShop.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

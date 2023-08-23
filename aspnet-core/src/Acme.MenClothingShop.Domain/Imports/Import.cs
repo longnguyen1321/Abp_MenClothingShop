@@ -23,7 +23,7 @@ namespace Acme.MenClothingShop.Imports
         public Import() { }
 
         internal Import(Guid maPN, Guid maNCC, Guid userId, DateTime ngayNhap, decimal tongTienNhap, string tinhTrangPX): base(maPN)
-        {
+        { 
             MaNCC = maNCC;
             UserId = userId;
             NgayNhap = ngayNhap;

@@ -3,6 +3,8 @@ using Acme.MenClothingShop.Exports;
 using Acme.MenClothingShop.Imports;
 using Acme.MenClothingShop.Suppliers;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -72,7 +74,7 @@ public class MenClothingShopDbContext :
     public MenClothingShopDbContext(DbContextOptions<MenClothingShopDbContext> options)
         : base(options)
     {
-
+        
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -142,5 +144,10 @@ public class MenClothingShopDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+    }
+
+    public static explicit operator MenClothingShopDbContext(Task<DbContext> v)
+    {
+        throw new NotImplementedException();
     }
 }

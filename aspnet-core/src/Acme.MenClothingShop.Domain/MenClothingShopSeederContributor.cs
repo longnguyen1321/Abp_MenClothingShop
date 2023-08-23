@@ -82,7 +82,7 @@ namespace Acme.MenClothingShop
                 exportList.Add(export1);
                 exportList.Add(export2);
 
-                await _exportRepository.InsertManyAsync(exportList, autoSave: true);
+                await _exportRepository.InsertManyAsync(exportList,true);
 
                 foreach (var clothes in listClothe)
                 {
@@ -93,7 +93,6 @@ namespace Acme.MenClothingShop
                     await _exportDetailRepository.InsertAsync(clothe2, autoSave: true);
                 }
             }
-
             
         }
     }
