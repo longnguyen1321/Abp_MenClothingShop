@@ -13,8 +13,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Acme.MenClothingShop.Imports
 {
     public class EfCoreImportRepository : EfCoreRepository<MenClothingShopDbContext, Import, Guid>, IImportRepository
-    {
-        
+    {     
         public EfCoreImportRepository(IDbContextProvider<MenClothingShopDbContext> dbContextProvider) : base(dbContextProvider)
         {
             

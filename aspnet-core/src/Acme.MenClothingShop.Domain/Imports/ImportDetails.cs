@@ -33,7 +33,7 @@ namespace Acme.MenClothingShop.Imports
 
         public override object[] GetKeys()
         {
-            throw new NotImplementedException();
+            return new object[] { MaPN, MaMH };
         }
     }
 }

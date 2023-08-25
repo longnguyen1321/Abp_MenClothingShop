@@ -1,5 +1,6 @@
 ﻿using Acme.MenClothingShop.Clothes;
 using Acme.MenClothingShop.Exports;
+using Acme.MenClothingShop.Imports;
 using AutoMapper;
 
 namespace Acme.MenClothingShop;
@@ -15,5 +16,6 @@ public class MenClothingShopApplicationAutoMapperProfile : Profile
         CreateMap<CreateUpdateClotheDto, Clothe>();
         CreateMap<CreateExportDto, Export>();
         CreateMap<CreateExportDetailDto, ExportDetail>();
+        CreateMap<Clothe, ImportClotheListDto>();
     }
 }

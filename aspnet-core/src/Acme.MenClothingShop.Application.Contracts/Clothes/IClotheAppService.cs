@@ -14,6 +14,6 @@ namespace Acme.MenClothingShop.Clothes
             PagedAndSortedResultRequestDto,
             CreateUpdateClotheDto> 
     {
-
+        
     }
 }

@@ -10,12 +10,11 @@ namespace Acme.MenClothingShop.Storage
 {
     public class StorageManager : DomainService
     { 
-        IExportDetailRepository _exportRepository; //Để lấy phương thức lấy DbContext
+        IExportDetailRepository _exportRepository; 
         
         public StorageManager(IExportDetailRepository exportRepository)
         {
             _exportRepository = exportRepository;
-            var D = _exportRepository;
         }
 
 

@@ -17,16 +17,18 @@ namespace Acme.MenClothingShop.Imports
             _importRepository = importRepository;
         }
 
-        public Import CreateAsync([NotNull]Guid maNCC, [NotNull] Guid userId,[NotNull] Decimal tongTienNhap)
+        public Import Create([NotNull]Guid maNCC, [NotNull] Guid userId,[NotNull] Decimal tongTienNhap)
         {
-            Import import = new Import(GuidGenerator.Create(), maNCC, userId, DateTime.Now, tongTienNhap, "Đã xuất");
+            Import import = new Import(GuidGenerator.Create(), maNCC, userId, DateTime.Now, tongTienNhap, "Đã nhập");
             
-            return new Import(GuidGenerator.Create(), maNCC, userId, DateTime.Now, tongTienNhap, "Đã xuất");
+            return new Import(GuidGenerator.Create(), maNCC, userId, DateTime.Now, tongTienNhap, "Đã nhập");
         }
 
         public void CancelImportAsync(Import selectedImportET)
         {
             selectedImportET.TinhTrangPX = "Đã hủy";
         }
+
+        
     }
 }

@@ -7,11 +7,13 @@
     "Menu:MenClothingShop": "Phần mềm quản lý cửa hàng bán quần áo nam!",
     "Menu:Clothes": "Sản phẩm",
     "Menu:Exports": "Xuất kho",
-    "Menu:Storage": "Tồn kho", 
+    "Menu:Imports": "Nhập kho",
+    "Menu:Storage": "Tồn kho",
     "Action": "Hành dộng",
     "Close": "Đóng",
     "Delete": "Xóa",
     "Edit": "Cập nhập",
+    "Add": "Thêm",
     "TenMH": "Tên",
     "SizeMH": "Kích cỡ",
     "SoLuongMH": "Số lượng",
@@ -23,8 +25,8 @@
     "AnhMH": "Ảnh",
     "MoTaMH": "Mô tả",
     "TongXuatThang": "Tổng xuất tháng",
-    "TongNhapThang": "Tổng nhập tháng", 
-    "TinhTrangMH":  "Tình trạng",
+    "TongNhapThang": "Tổng nhập tháng",
+    "TinhTrangMH": "Tình trạng",
     "AreYouSure": "Bạn có chắc?",
     "AreYouSureToDelete": "Bạn có muốn xóa?",
     "Enum:ClotheType:0": "T-0000",
@@ -56,6 +58,7 @@
     "Permission:Clothes.Delete": "Xóa mặt hàng",
     "Permission:Exports": "Tạo phiếu nhập",
     "Permission:Export.Create": "Tạo phiếu nhập",
-    "Permission:Export.Cancel": "Hủy phiếu nhập"
+    "Permission:Export.Cancel": "Hủy phiếu nhập",
+    "MenClothingShop:0001": "Trạng thái phiếu nhập không hợp lệ: status"
   }
 }

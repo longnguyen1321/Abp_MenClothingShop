@@ -34,7 +34,7 @@ namespace Acme.MenClothingShop.Exports
             {
                 id = (Guid)CurrentUser.Id;
             }    
-            var newCreatedExport = await _exportManager.CreateAsync(id, input.TongTienXuat, input.TinhTrangPX, input.LyDoXuat);
+            var newCreatedExport = await _exportManager.CreateAsync((Guid)CurrentUser.Id, input.TongTienXuat, input.TinhTrangPX, input.LyDoXuat);
 
             await _exportRepository.InsertAsync(newCreatedExport);
 

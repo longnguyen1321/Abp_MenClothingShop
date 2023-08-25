@@ -7,7 +7,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Acme.MenClothingShop.Imports
 {
-    public interface IImportRepository : IRepository<Import>
+    public interface IImportRepository : IRepository<Import, Guid>
     {
         Task InsertAsync(Import import);
 

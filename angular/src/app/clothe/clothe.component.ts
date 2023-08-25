@@ -11,7 +11,7 @@ import { ClotheDto, ClotheService, clotheMaterialOptions, clotheTypeOptions } fr
   providers: [ListService],
 })
 export class ClotheComponent implements OnInit {
-  clothe = { items: [], totalCount: 0} as PagedResultDto<ClotheDto>;
+  clothe = { items: [], totalCount: 0 } as PagedResultDto<ClotheDto>;
 
   selectedClothe = {} as ClotheDto; //Khai báo mặt hàng được chọn
 
@@ -26,7 +26,7 @@ export class ClotheComponent implements OnInit {
 
   ngOnInit(): void {
     const clotheStreamCreator = (query) => this.clotheService.getList(query);
-
+    
     this.list.hookToQuery(clotheStreamCreator).subscribe((response) => {
       this.clothe = response;
     });
@@ -38,7 +38,7 @@ export class ClotheComponent implements OnInit {
     this.isModalOpen = true;
   }
 
-  editClothe(id: string){
+  editClothe(id: string){ 
     this.clotheService.get(id).subscribe((clothe) => {
       this.selectedClothe = clothe;
       this.buildForm();
