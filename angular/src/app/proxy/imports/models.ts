@@ -1,4 +1,4 @@
-import type { EntityDto, PagedAndSortedResultRequestDto } from '@abp/ng.core';
+import type { EntityDto } from '@abp/ng.core';
 
 export interface CancelImportDto {
   maPN: string;
@@ -18,9 +18,6 @@ export interface CreateImportDto {
 
 export interface CreateManyImportDetailsDto {
   importDetails: CreateImportDetailDto[];
-}
-
-export interface GetImportClotheListDto extends PagedAndSortedResultRequestDto {
 }
 
 export interface ImportClotheListDto extends EntityDto<string> {

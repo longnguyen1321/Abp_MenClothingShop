@@ -21,23 +21,26 @@
             <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     <div ngbDropdown container="body" class="d-inline-block">
-                    <button
-                        class="btn btn-primary btn-sm dropdown-toggle"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        ngbDropdownToggle
-                    >
-                        <i class="fa fa-cog mr-1"></i>{{ '::Actions' | abpLocalization }}
-                    </button>
-                    <div ngbDropdownMenu>
-                        <button *abpPermission="'MenClothingShop.Clothes.Edit'" ngbDropdownItem (click)="editClothe(row.id)">
-                            {{ '::Edit' | abpLocalization }}
+                        <button
+                            class="btn btn-primary btn-sm dropdown-toggle"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            ngbDropdownToggle
+                        >
+                            <i class="fa fa-cog mr-1"></i>{{ '::Actions' | abpLocalization }}
                         </button>
-
-                        <button *abpPermission="'MenClothingShop.Clothes.Delete'" ngbDropDownItem (click)="deleteClothe(row.id)">
-                            {{ '::Delete' | abpLocalization }}
-                        </button>
-                    </div>
+                        <div ngbDropdownMenu>
+                            <div>
+                            <button *abpPermission="'MenClothingShop.Clothes.Edit'" ngbDropdownItem (click)="editClothe(row.id)">
+                                {{ '::Edit' | abpLocalization }}
+                            </button>
+                            </div>
+                            <div>
+                            <button *abpPermission="'MenClothingShop.Clothes.Delete'" ngbDropDownItem (click)="deleteClothe(row.id)">
+                                {{ '::Delete' | abpLocalization }}
+                            </button>
+                            </div>
+                        </div>
                     </div>
                 </ng-template>
             </ngx-datatable-column>

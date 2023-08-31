@@ -41,7 +41,7 @@
     </div>
 
     <div class="card-footer">
-        <button>Tạo phiếu nhập</button>
+        <button (click)="createImport()">Tạo phiếu nhập</button>
     </div>
 </div>
 
@@ -51,7 +51,7 @@
     </ng-template>
 
     <ng-template #abpBody> 
-        <form [formGroup]="form">
+        <form [formGroup]="form" (ngSubmit)="save()">
             <div class="form-group">
                 <label for="clothe-name">Tên</label><span> * </span>
                 <input type="text" id="clothe-name" class="form-control" formControlName="tenMH" autofocus />
@@ -82,3 +82,95 @@
         </button>
       </ng-template>
 </abp-modal>
+
+
+import { ListResultDto, ListService, PagedResultDto } from '@abp/ng.core';
+import { ConfirmationService } from '@abp/ng.theme.shared';
+import { query } from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ClotheDto, ClotheService } from '@proxy/clothes';
+import { ImportDetailService } from '@proxy/imports';
+import { CreateImportDto, CreateManyImportDetailsDto, ImportClotheListDto, SelectedClotheList } from '@proxy/imports/models';
+
+@Component({
+  selector: 'app-import',
+  templateUrl: './import.component.html',
+  styleUrls: ['./import.component.scss'],
+  providers: [ListService],
+})
+export class ImportComponent implements OnInit {
+  clotheList = { items: [], totalCount: 0 } as PagedResultDto<ImportClotheListDto>;
+  selectedClothe = { } as ClotheDto;
+
+  selectedClothesList = {} as CreateManyImportDetailsDto;
+
+  selectedImportClothe = {} as SelectedClotheList;
+  selectedImportClotheList = [];
+  action = null;
+  form: FormGroup;
+
+  isModalOpen = false;
+
+  constructor(private importDetailService: ImportDetailService, public readonly list: ListService, private fb: FormBuilder, private confirmation: ConfirmationService, private clotheService: ClotheService) { }
+
+  ngOnInit(): void {
+    const clotheStreamCreator = (query) => this.importDetailService.getClotheListByInput(query);
+
+    this.list.hookToQuery(clotheStreamCreator).subscribe((response) => {
+      this.clotheList = response;
+    });
+  }
+
+  addClothe(id: string){
+    this.clotheService.get(id).subscribe((clothe) => {
+      this.selectedClothe = clothe;
+      this.action = "add";
+      this.buildForm();
+      this.isModalOpen = true;
+      this.action = null;
+    })
+  }
+
+  editClothe(id: string){
+    this.clotheService.get(id).subscribe((clothe) => {
+      this.selectedClothe = clothe;
+      this.action = "edit";
+      this.buildForm();
+      this.isModalOpen = true;
+      this.action = null;
+    })
+  }
+
+  deleteClothe(id: string){
+
+  }
+
+  addToList(){
+    array.forEach(element => {
+      
+    });this.selectedImportClotheList.find(x => x.t)
+    this.selectedImportClotheList.push()
+  }
+
+  deleteFromList(){
+
+  }
+
+  buildForm(){
+    this.form = this.fb.group({
+      tenMH: [this.selectedClothe.tenMH, Validators.required],
+      sizeMH: [this.selectedClothe.sizeMH || '', Validators.required],
+      soLuongNhap: [0 || '', Validators.required, Validators.min(0)],
+      giaNhap: [0 || '', Validators.required, Validators.min(0)] 
+    });
+  }
+
+  save(){
+    if (this.form.invalid) {
+      return;
+    }
+
+    this.action == "add" ? this.selectedClothesList.push({this.form.value(x=>x.tenMH), this.}) : this.selectedClothesList.pop();
+  }
+}

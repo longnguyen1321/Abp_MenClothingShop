@@ -1,7 +1,8 @@
-import type { CreateManyImportDetailsDto, GetImportClotheListDto, ImportClotheListDto } from './models';
+import type { CreateManyImportDetailsDto, ImportClotheListDto } from './models';
 import { RestService } from '@abp/ng.core';
 import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
+import type { GetClotheListDto } from '../clothes/models';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class ImportDetailService {
     },
     { apiName: this.apiName });
 
-  getClotheListByInput = (input: GetImportClotheListDto) =>
+  getClotheListByInput = (input: GetClotheListDto) =>
     this.restService.request<any, PagedResultDto<ImportClotheListDto>>({
       method: 'GET',
       url: '/api/app/import-detail/clothe-list',
