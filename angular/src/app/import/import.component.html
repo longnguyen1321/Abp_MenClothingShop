@@ -1,17 +1,23 @@
 <div class="card">
     <div class = "card-header">
-        <div class = "row">
-            <div class = "col col-md-6">
-                <h5 class = "card-title">
-                    {{ '::Menu:Clothes' | abpLocalization }}
-                </h5>
-            </div>
-            
-        </div>
     </div>
 
-    <div class="card-body">
-        <ngx-datatable [rows]="clotheList.items" [count]="clotheList.totalCount" [list]="list" default>
+    <div class="card-body" id="mainContent"> 
+        <div class = "col col-md-6">
+            <h5 class="section0">
+                Nhà cung cấp
+            </h5>
+            <select class="supplierSelection" id="supplierSelection" >
+                <option [ngValue]="null">Chọn 1 nhà cung cấp</option>
+                <option [ngValue]="supplier.tenNCC" *ngFor="let supplier of supplierList.items">{{ supplier.tenNCC }}</option>
+            </select>
+        </div>
+        <div class = "col col-md-6">
+            <h5 class = "section1">
+                {{ '::Menu:Clothes' | abpLocalization }}
+            </h5>
+        </div>                           
+        <ngx-datatable [rows]="clotheList.items" [count]="clotheList.totalCount" [list]="list" default class="clotheListTable">
             <ngx-datatable-column [name] = "'::TenMH' | abpLocalization" prop="tenMH"></ngx-datatable-column>
             <ngx-datatable-column [name] = "'::SizeMH' | abpLocalization" prop = "sizeMH"></ngx-datatable-column>
             <ngx-datatable-column [name] = "'::TonKho' | abpLocalization" prop = "tonKho"></ngx-datatable-column>
@@ -37,11 +43,11 @@
                     </button>
                 </ng-template>
             </ngx-datatable-column>
-        </ngx-datatable>
+        </ngx-datatable>                  -->
     </div>
 
-    <div class="card-footer">
-        <button>Tạo phiếu nhập</button>
+    <div class="card-footer">       
+        <div><button class="btn btn-success" (click)="openBootstrapModal()" id="createImportBtn">Tạo phiếu nhập</button></div>
     </div>
 </div>
 
@@ -82,3 +88,79 @@
         </button>
       </ng-template>
 </abp-modal>
+  
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Hành động</h4>
+          <button type="button" class="btn-close" (click)="closeBootstrapModal()"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="selectedClothes">
+                <div>
+                    <h5>Danh sách mặt hàng đã chọn</h5>
+                </div>
+                <table class="selectedClothesTable">
+                    <tr>
+                        <th class="tenMHSelected">Tên</th>
+                        <th class="sizeMHSelected">Kích cỡ</th>
+                        <th class="soLuongNhapSelected">Số lượng nhập</th>
+                        <th class="giaNhapSelected">Giá nhập</th>
+                        <th class="thanhTienNhapSelected">Thành tiền nhập</th>
+                    </tr>
+                    <tr *ngFor="let clothe of selectedClotheListToDisplay">
+                        <td>{{clothe.tenMH}}</td>
+                        <td>{{clothe.sizeMH}}</td>
+                        <td>{{clothe.soLuongNhap}}</td>
+                        <td>{{clothe.giaNhap}}</td>
+                        <td>{{clothe.thanhTienNhap}}</td>
+                    </tr>
+                </table>      
+            </div>
+
+            <div class="importInfo" >
+
+                <div>
+                    <h5>Thông tin phiếu nhập</h5>
+                </div>
+                <form id="import-form">
+                    <div class="form-group">
+                        <label for="import-supplier">Nhà cung cấp</label><span> * </span>
+                        <input type="text" id="import-supplier" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label for="import-creator">Người tạo</label><span> * </span>
+                        <input type="text" id="import-creator" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label for="import-total">Tổng tiền</label><span> * </span>
+                        <input type="number" id="import-total" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label for="import-status">Tình trạng phiếu nhập</label><span> * </span>
+                        <input type="text" id="import-status" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label for="import-id">Mã phiếu nhập</label><span> * </span>
+                        <input type="text" id="import-id" class="form-control" readonly/>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn-primary" (click)="createImport()">Tạo phiếu nhập</button>
+            <button type="button" class="btn btn-danger" (click)="cancelImport()">Hủy phiếu nhập</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>

@@ -13,6 +13,8 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APP_ROUTE_PROVIDER } from './route.provider';
+import { ImportCartComponent } from './import-cart/import-cart.component';
+import { ClotheComponent } from './clothe/clothe.component';
 
 @NgModule({
   imports: [

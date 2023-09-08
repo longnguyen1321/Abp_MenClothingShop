@@ -26,3 +26,11 @@ export interface ImportClotheListDto extends EntityDto<string> {
   tonKho: number;
   slTonKhoToiThieu: number;
 }
+
+export interface ImportDto extends EntityDto<string> {
+  maNCC?: string;
+  userId?: string;
+  ngayNhap?: string;
+  tongTienNhap: number;
+  tinhTrangPX?: string;
+}

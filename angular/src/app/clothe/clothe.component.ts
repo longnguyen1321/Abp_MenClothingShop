@@ -1,6 +1,6 @@
-import { ListService, PagedResultDto, validateRequired } from '@abp/ng.core';
+import { ListService, PagedAndSortedResultRequestDto, PagedResultDto, validateRequired } from '@abp/ng.core';
 import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClotheDto, ClotheService, clotheMaterialOptions, clotheTypeOptions } from '@proxy/clothes';
 
@@ -25,7 +25,7 @@ export class ClotheComponent implements OnInit {
   constructor(public readonly list: ListService, private clotheService: ClotheService, private fb: FormBuilder, private confirmation: ConfirmationService) { }
 
   ngOnInit(): void {
-    const clotheStreamCreator = (query) => this.clotheService.getList(query);
+    const clotheStreamCreator = (query: PagedAndSortedResultRequestDto) => this.clotheService.getList(query);
     
     this.list.hookToQuery(clotheStreamCreator).subscribe((response) => {
       this.clothe = response;

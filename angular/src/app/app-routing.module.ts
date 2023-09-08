@@ -29,7 +29,6 @@ const routes: Routes = [
   { path: 'exports', loadChildren: () => import('./export/export.module').then(m => m.ExportModule) },
   { path: 'storage', loadChildren: () => import('./storage/storage.module').then(m => m.StorageModule) },
   { path: 'imports', loadChildren: () => import('./import/import.module').then(m => m.ImportModule) },
-  { path: 'imports', loadChildren: () => import('./import/import.module').then(m => m.ImportModule) },
   { path: 'importCart', loadChildren: () => import('./import-cart/import-cart.module').then(m => m.ImportCartModule) },
 ];
 

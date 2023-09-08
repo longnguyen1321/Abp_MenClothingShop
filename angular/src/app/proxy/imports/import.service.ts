@@ -1,4 +1,4 @@
-import type { CancelImportDto, CreateImportDto } from './models';
+import type { CancelImportDto, CreateImportDto, ImportDto } from './models';
 import { RestService } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
 
@@ -9,7 +9,7 @@ export class ImportService {
   apiName = 'Default';
 
   create = (input: CreateImportDto) =>
-    this.restService.request<any, void>({
+    this.restService.request<any, ImportDto>({
       method: 'POST',
       url: '/api/app/import',
       body: input,
@@ -17,7 +17,7 @@ export class ImportService {
     { apiName: this.apiName });
 
   update = (input: CancelImportDto) =>
-    this.restService.request<any, void>({
+    this.restService.request<any, ImportDto>({
       method: 'PUT',
       url: '/api/app/import',
       body: input,

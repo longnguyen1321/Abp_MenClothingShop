@@ -1,0 +1,32 @@
+table, th, td {
+    border: 1px solid black;
+  }
+.tableCell1{
+  width: 100%;
+}
+
+.tableCell2{
+  width: 100%;
+}
+
+.selectedClothesTable{
+  width: 100%;
+}
+
+.tenMHSelected{
+  width: 20%;
+}
+
+.childComponent{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 100px;
+    height: 100px;
+}
+
+#createImportBtn{
+  
+}
