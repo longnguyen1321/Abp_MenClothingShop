@@ -4,6 +4,7 @@ using Acme.MenClothingShop.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Acme.MenClothingShop.Migrations
 {
     [DbContext(typeof(MenClothingShopDbContext))]
-    partial class MenClothingShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230828033310_Specify_import_decimal_type_collumns")]
+    partial class Specify_import_decimal_type_collumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,7 +76,7 @@ namespace Acme.MenClothingShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SizeMH")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SoLuongMH")
                         .HasColumnType("int");
@@ -89,9 +91,8 @@ namespace Acme.MenClothingShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenMH", "SizeMH")
-                        .IsUnique()
-                        .HasFilter("[TenMH] IS NOT NULL AND [SizeMH] IS NOT NULL");
+                    b.HasIndex("TenMH")
+                        .IsUnique();
 
                     b.ToTable("AppClothes", (string)null);
                 });

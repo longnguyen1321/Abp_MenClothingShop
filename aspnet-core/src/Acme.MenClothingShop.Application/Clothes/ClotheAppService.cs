@@ -1,5 +1,6 @@
 ﻿using Acme.MenClothingShop.EntityFrameworkCore;
 using Acme.MenClothingShop.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Acme.MenClothingShop.Clothes
 {
+    [Authorize(MenClothingShopPermissions.Clothes.Default)]
     public class ClotheAppService : CrudAppService<Clothe, ClotheDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateClotheDto>, IClotheAppService
     {
-
         public ClotheAppService(IRepository<Clothe, Guid> repository) : base(repository)
         {
             GetPolicyName = MenClothingShopPermissions.Clothes.Default;
@@ -22,5 +23,7 @@ namespace Acme.MenClothingShop.Clothes
             UpdatePolicyName = MenClothingShopPermissions.Clothes.Edit;
             DeletePolicyName = MenClothingShopPermissions.Clothes.Delete;
         }
+
+
     }
 }

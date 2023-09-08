@@ -16,9 +16,10 @@ namespace Acme.MenClothingShop.Imports
         IImportDetailRepository _importDetailRepo;
         ClotheManager _clotheManager;
         ImportDetailManager _importDetailManager;
-        IRepository<Clothe,Guid> _clotheRepo;
+        IClotheRepository _clotheRepo;
+        
 
-        public ImportDetailAppService(IImportDetailRepository importDetailRepository, IRepository<Clothe,Guid> clotheRepo, ClotheManager clotheManager, ImportDetailManager importDetailManager)
+        public ImportDetailAppService(IImportDetailRepository importDetailRepository, IClotheRepository clotheRepo, ClotheManager clotheManager, ImportDetailManager importDetailManager)
         {
             _importDetailRepo = importDetailRepository;
             _clotheRepo = clotheRepo;
@@ -38,7 +39,9 @@ namespace Acme.MenClothingShop.Imports
 
                 await _clotheRepo.UpdateAsync(selectedClothe, autoSave: true); //Update trong CSDL
 
-                await _importDetailRepo.InsertAsync(createdDetail, autoSave: true); 
+                await _importDetailRepo.InsertAsync(createdDetail, autoSave: true);  
+
+
             }
         }
 
@@ -56,11 +59,11 @@ namespace Acme.MenClothingShop.Imports
             }
         }
 
-        public async Task<PagedResultDto<ImportClotheListDto>> GetClotheList(GetImportClotheListDto input)
+        public async Task<PagedResultDto<ImportClotheListDto>> GetClotheList(GetClotheListDto input)
         {
-            List<Clothe> impClotheList = await _importDetailRepo.GetClotheListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
+            List<Clothe> impClotheList = await _clotheRepo.GetClotheListAsync(input.SkipCount, input.MaxResultCount, input.Sorting); 
 
-            return new PagedResultDto<ImportClotheListDto>(impClotheList.Count(), ObjectMapper.Map<List<Clothe>, List<ImportClotheListDto>>(impClotheList)); 
+            return new PagedResultDto<ImportClotheListDto>(impClotheList.Count, ObjectMapper.Map<List<Clothe>, List<ImportClotheListDto>>(impClotheList)); 
         }
     }
 }

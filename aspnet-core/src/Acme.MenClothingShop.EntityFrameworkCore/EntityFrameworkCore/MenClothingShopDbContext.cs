@@ -95,15 +95,18 @@ public class MenClothingShopDbContext :
         /* Configure your own tables/entities inside here */
         builder.Entity<Clothe>(c =>
         {
+            c.HasIndex(i => new { i.TenMH, i.SizeMH }).IsUnique();
             c.ToTable(MenClothingShopConsts.DbTablePrefix + "Clothes", MenClothingShopConsts.DbSchema);
             c.ConfigureByConvention();
             c.Property(x => x.TenMH).IsRequired().HasMaxLength(128);
+            c.Property(d => d.GiaMH).HasColumnType("decimal(18,2)") ;
         });
 
         builder.Entity<Export>(c => {
             c.ToTable(MenClothingShopConsts.DbTablePrefix + "Exports", MenClothingShopConsts.DbSchema);
             c.ConfigureByConvention();
             c.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.UserId).IsRequired();
+            c.Property(d => d.TongTienXuat).HasColumnType("decimal(18,2)");
         });
         
         builder.Entity<ExportDetail>(c =>
@@ -113,6 +116,8 @@ public class MenClothingShopDbContext :
             c.ConfigureByConvention();
             c.HasOne<Export>().WithMany().HasForeignKey(y => y.ExportId).IsRequired();
             c.HasOne<Clothe>().WithMany().HasForeignKey(x => x.ClotheId).IsRequired();
+            c.Property(d => d.GiaXuat).HasColumnType("decimal(18,2)");
+            c.Property(d => d.ThanhTienXuat).HasColumnType("decimal(18,2)");
         });
 
         builder.Entity<Supllier>(c =>
@@ -127,6 +132,7 @@ public class MenClothingShopDbContext :
             c.ToTable(MenClothingShopConsts.DbTablePrefix + "Imports", MenClothingShopConsts.DbSchema);
             c.ConfigureByConvention();
             c.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.UserId).IsRequired();
+            c.Property(d => d.TongTienNhap).HasColumnType("decimal(18,2)");
         });
 
         builder.Entity<ImportDetail>(c =>
@@ -136,6 +142,8 @@ public class MenClothingShopDbContext :
             c.ConfigureByConvention();
             c.HasOne<Import>().WithMany().HasForeignKey(x => x.MaPN).IsRequired();
             c.HasOne<Clothe>().WithMany().HasForeignKey(y => y.MaMH).IsRequired();
+            //c.Property(d => d.GiaNhap).HasColumnType("decimal(18,2");
+            //c.Property(d => d.ThanhTienNhap).HasColumnType("decimal(18,2)");
         });
         
         //builder.Entity<YourEntity>(b =>

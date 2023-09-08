@@ -9,7 +9,7 @@ namespace Acme.MenClothingShop.Clothes
     {
         public String TenMH { get; set; }
 
-        public String SizeMH { get; set; }
+        public String SizeMH { get; set; } 
 
         public int SoLuongMH { get; set; }
 

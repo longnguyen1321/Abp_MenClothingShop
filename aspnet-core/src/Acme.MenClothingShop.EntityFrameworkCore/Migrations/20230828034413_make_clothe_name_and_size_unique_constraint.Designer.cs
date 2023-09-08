@@ -4,6 +4,7 @@ using Acme.MenClothingShop.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Acme.MenClothingShop.Migrations
 {
     [DbContext(typeof(MenClothingShopDbContext))]
-    partial class MenClothingShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230828034413_make_clothe_name_and_size_unique_constraint")]
+    partial class make_clothe_name_and_size_unique_constraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Volo.Abp.Application.Dtos;
 
-namespace Acme.MenClothingShop.Imports
+namespace Acme.MenClothingShop.Clothes
 {
-    public class GetImportClotheListDto : PagedAndSortedResultRequestDto
+    public class GetClotheListDto : PagedAndSortedResultRequestDto
     {
     }
 }

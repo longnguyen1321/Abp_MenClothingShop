@@ -4,6 +4,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Acme.MenClothingShop.Clothes;
+using static Acme.MenClothingShop.Permissions.MenClothingShopPermissions;
+using Acme.MenClothingShop.Imports;
 
 namespace Acme.MenClothingShop.Clothes
 {
@@ -12,8 +15,8 @@ namespace Acme.MenClothingShop.Clothes
             ClotheDto,
             Guid,
             PagedAndSortedResultRequestDto,
-            CreateUpdateClotheDto> 
+    CreateUpdateClotheDto> 
     {
-        
+       
     }
 }

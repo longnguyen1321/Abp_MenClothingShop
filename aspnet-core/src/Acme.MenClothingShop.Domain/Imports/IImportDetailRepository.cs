@@ -13,7 +13,6 @@ namespace Acme.MenClothingShop.Imports
 {
     public interface IImportDetailRepository : IRepository<ImportDetail>
     {
-        public Task<List<Clothe>> GetClotheListAsync(int skipCount, int maxResultCount, string sorting);
 
         public new Task InsertManyAsync(IEnumerable<ImportDetail> entities, bool autoSave = false, CancellationToken cancellationToken = default);
 

@@ -8,8 +8,8 @@ namespace Acme.MenClothingShop.Imports
 {
     public interface IImportAppService : IApplicationService
     {
-        public Task CreateAsync(CreateImportDto input);
+        public Task<ImportDto> CreateAsync(CreateImportDto input);
 
-        public Task UpdateAsync(CancelImportDto input);
+        public Task<ImportDto> UpdateAsync(CancelImportDto input);
     }
 }

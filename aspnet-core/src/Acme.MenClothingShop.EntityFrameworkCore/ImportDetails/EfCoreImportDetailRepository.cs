@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -22,27 +23,6 @@ namespace Acme.MenClothingShop.ImportDetails
         public EfCoreImportDetailRepository(IDbContextProvider<MenClothingShopDbContext> dbContextProvider) : base(dbContextProvider)
         {
             
-        }
-
-        public async Task<List<Clothe>> GetClotheListAsync(int skipCount, int maxResultCount, string sorting)
-        {
-            var context = await GetDbContextAsync();
-            List<Clothe> finalResult = new List<Clothe>();
-
-            var query =  (context.Clothes.OrderBy((sorting == null || sorting == "") ? "x=>x.TenMH" : sorting).Skip(skipCount).Take(maxResultCount).Select(s => new Clothe
-                         {
-                             TenMH = s.TenMH,
-                             SizeMH = s.SizeMH,
-                             TonKho = s.TonKho,
-                             SLTonKhoToiThieu = s.SLTonKhoToiThieu  
-                         }));
-
-            foreach(var item in query)
-            {
-                finalResult.Add(item);
-            }
-
-            return finalResult;
         }
 
         public async Task<List<ImportDetail>> GetListAsync(Guid maPN)

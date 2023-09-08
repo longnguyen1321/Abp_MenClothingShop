@@ -9,6 +9,6 @@ namespace Acme.MenClothingShop.Clothes
 {
     public interface IClotheRepository : IRepository<Clothe, Guid>
     {
-
+        public Task<List<Clothe>> GetClotheListAsync(int skipCount, int maxResultCount, string sorting);
     }
 }
