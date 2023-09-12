@@ -15,11 +15,12 @@ namespace Acme.MenClothingShop
     public class MenClothingShopDataSeederContributor : IDataSeedContributor, ITransientDependency
     {
         private readonly IRepository<Clothe, Guid> _clotheRepository;
-        private readonly IdentityUserManager _userManager;
         private readonly IExportDetailRepository _exportDetailRepository;
         private readonly IExportRepository _exportRepository;
+
         private readonly ExportManager _exportManager;
         private readonly ExportDetailManager _exportDetailManager;
+        private readonly IdentityUserManager _userManager;
 
         public MenClothingShopDataSeederContributor(IRepository<Clothe, Guid> clotheRepository, IExportRepository exportRepository, IExportDetailRepository exportDetailRepository, ExportManager exportManager, ExportDetailManager exportDetailManager, IdentityUserManager userManager)
         {

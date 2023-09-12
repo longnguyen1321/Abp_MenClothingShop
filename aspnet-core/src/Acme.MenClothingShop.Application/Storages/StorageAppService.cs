@@ -27,83 +27,8 @@ namespace Acme.MenClothingShop.Storages
         }
         public  async Task<PagedResultDto<ClotheStorageDto>> GetAsync(GetClotheStorageListDto input)
         {
-            var context =  (MenClothingShopDbContext) await _exportDetailRepository.GetDbContextAsync(); /*
-            var clotheStorageList = await context.Clothes.GroupJoin(context.ImportDetails, clothe1 => clothe1.Id, importedClothe => importedClothe.MaMH, (clothe1, importedClothe) => new
-            {
-                
-                ClotheName = clothe1.TenMH,
-                ClotheStatus = clothe1.SizeMH,
-                ClotheImportedQuantity = importedClothe.ToList()
-            }).GroupJoin(context.ExportDetails, clothe2 => clothe2.ClotheName.Id, exportedClothe => exportedClothe.ClotheId, (clothe2, exportedClothe) => new
-            {
-                ClotheId2 = clothe2, 
-                ClotheExportedQuantity = exportedClothe.ToList()
-            }).Select(selector => new ClotheStorageDto                  
-            {
-                TenMH = selector.clothe2.clothe1.TenMH,
-                TonKho = selector.clothe2.clothe1.TonKho,
-                TinhTrangMH = selector.clothe2.clothe1.SizeMH,
-                TongNhapThangMH = selector.clothe2.clothe1.TonKho,//selector.clothe2.ImportDetails.Sum(s => s.SoLuongNhap) == null ? 0 : selector.clothe2.ImportDetails.Sum(s => s.SoLuongNhap),
-                TongXuatThangMH = selector.clothe2.clothe1.TonKho//selector.ExportDetails.Sum(e => e.SoLuongXuat) == null ? 0 : selector.ExportDetails.Sum(e => e.SoLuongXuat)
-            }).OrderBy(input.Sorting)
-                .Skip(input.SkipCount)
-                .Take(input.MaxResultCount)
-                .ToListAsync();
-
-            */
-
-            /*
-            var clotheStorageDtoList = await context.Clothes.GroupJoin(context.ImportDetails, clothe1 => clothe1.Id, importedClothe => importedClothe.MaMH, (clothe1, importedClothe) => new
-            {
-                clothe1,
-                ImportDetails = importedClothe.ToList(),
-            }).GroupJoin(context.ExportDetails, clothe2 => clothe2.clothe1.Id, exportedClothe => exportedClothe.ClotheId, (clothe2, exportedClothe) => new 
-            {
-                clothe2, 
-                ExportDetails = exportedClothe
-            }).Select(selector => new ClotheStorageDto                  
-            {
-                TenMH = selector.clothe2.clothe1.TenMH, 
-                TonKho = selector.ExportDetails.Sum(x => x.SoLuongXuat),
-                TinhTrangMH = selector.clothe2.clothe1.SizeMH,
-                TongNhapThangMH = selector.clothe2.clothe1.TonKho,//selector.clothe2.ImportDetails.Sum(s => s.SoLuongNhap) == null ? 0 : selector.clothe2.ImportDetails.Sum(s => s.SoLuongNhap),
-                TongXuatThangMH = selector.clothe2.clothe1.TonKho//selector.ExportDetails.Sum(e => e.SoLuongXuat) == null ? 0 : selector.ExportDetails.Sum(e => e.SoLuongXuat)
-            }).ToListAsync(); */ /*.Select(s => new
-                         
-            {
-                Ma = s.clothe2.clothe1.Id,
-                Ten = s.clothe2.clothe1.TenMH,
-                TonKho = s.clothe2.clothe1.TonKho,
-                TinhTrang = s.clothe2.clothe1.SizeMH,
-                SLXuat = s.exportedClothe.SoLuongXuat,
-                SLNhap = s.clothe2.importedClothe.SoLuongNhap
-            })*/ /*
-            var clotheStorageDtoList = await context.Clothes.Join(context.ImportDetails, clothe1 => clothe1.Id, importedClothe => importedClothe.MaMH, (clothe1, importedClothe) => new
-            {
-                clothe1,
-                ImportDetails = importedClothe
-            }).Join(context.ExportDetails, clothe2 => clothe2.clothe1.Id, exportedClothe => exportedClothe.ClotheId, (clothe2, exportedClothe) => new
-            {
-                clothe2,
-                exportedClothe
-            }).GroupBy(gs => new { gs.clothe2.clothe1.Id, gs.clothe2.clothe1.TenMH, gs.clothe2.clothe1.TonKho, gs.clothe2.clothe1.SLTonKhoToiThieu }).OrderBy(o => o.Key    ).Select(lSelector => new ClotheStorageDto
-            {
-                TongNhapThangMH = lSelector.Sum(im => im.clothe2.ImportDetails.SoLuongNhap),
-                TongXuatThangMH = lSelector.Sum(ex => ex.exportedClothe.SoLuongXuat),
-                TenMH = lSelector.Key.TenMH,
-                TonKho = lSelector.Key.TonKho,
-                TinhTrangMH = lSelector.Key.TenMH//lSelector.Key.SLTonKhoToiThieu < lSelector.Key.TonKho ? "Cần bổ sung" : "Còn hàng"
-            }).ToListAsync();  */
-            /*
-            var clotheStorageDtoList2 = context.Clothes.Select(t => new ClotheStorageDto
-            {
-                TongNhapThangMH = t.SoLuongMH,
-                TongXuatThangMH = t.SoLuongMH,
-                TonKho = t.TonKho,
-                TenMH = t.TenMH,
-                TinhTrangMH = t.SizeMH
-            }).ToList();*/
-            
+            var context =  (MenClothingShopDbContext) await _exportDetailRepository.GetDbContextAsync(); 
+                       
             var clotheStorageDtoList1 =(from clothe in context.Clothes
                                        join imp in context.ImportDetails
                                        on clothe.Id equals imp.MaMH into importedClothe
@@ -132,22 +57,12 @@ namespace Acme.MenClothingShop.Storages
                                            TinhTrangMH = y.Key.TinhTrangMH
                                        });
             List<ClotheStorageDto> list = new List<ClotheStorageDto>();
+
             foreach(var t in clotheStorageDtoList1)
             {
                 list.Add(t);
             } 
-            /*List<ClotheStorageDto> list = new List<ClotheStorageDto>();
-            foreach(var clothe in clotheStorageDtoList)
-            {
-                list.Add(new ClotheStorageDto
-                {
-                    TongNhapThangMH = 10,//clothe.ImportedClothe.Sum(x => x.SoLuongNhap),
-                    TongXuatThangMH = 10,//importedClothe.Sum(x => x.SoLuongNhap),
-                    TonKho = clothe.TonKho,
-                    TenMH = clothe.TenMH,
-                    TinhTrangMH = clothe.TonKho < clothe.SLTonKhoToiThieu ? "Cần bổ sung!" : "Còn hàng"
-                });
-            }*/
+            
             return new PagedResultDto<ClotheStorageDto>(await context.Clothes.CountAsync(), list) ;
         }
     }

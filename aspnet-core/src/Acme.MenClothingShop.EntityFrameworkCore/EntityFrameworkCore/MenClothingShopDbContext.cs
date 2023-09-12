@@ -57,6 +57,8 @@ public class MenClothingShopDbContext :
 
     public DbSet<Supllier> Suplliers { get; set; }
 
+    public DbSet<SupplierClothe> SupplierClothes { get; set; }
+
     //Identity
     public DbSet<IdentityUser> Users { get; set; }
     public DbSet<IdentityRole> Roles { get; set; }
@@ -121,7 +123,7 @@ public class MenClothingShopDbContext :
         });
 
         builder.Entity<Supllier>(c =>
-        {
+        { //Nhớ thêm index unique name
             c.ToTable(MenClothingShopConsts.DbTablePrefix + "Suppliers", MenClothingShopConsts.DbSchema);
             c.ConfigureByConvention();
             c.Property(x => x.TenNCC).IsRequired().HasMaxLength(128);
@@ -145,7 +147,15 @@ public class MenClothingShopDbContext :
             //c.Property(d => d.GiaNhap).HasColumnType("decimal(18,2");
             //c.Property(d => d.ThanhTienNhap).HasColumnType("decimal(18,2)");
         });
-        
+
+        builder.Entity<SupplierClothe>(c =>
+        {
+            c.HasKey(compositeKey => new { compositeKey.MaNCC, compositeKey.MaMH });
+            c.ToTable(MenClothingShopConsts.DbTablePrefix + "SupplierClothes", MenClothingShopConsts.DbSchema);
+            c.ConfigureByConvention();
+            c.HasOne<Supllier>().WithMany().HasForeignKey(x => x.MaNCC).IsRequired();
+            c.HasOne<Clothe>().WithMany().HasForeignKey(y => y.MaMH).IsRequired();
+        });
         //builder.Entity<YourEntity>(b =>
         //{
         //    b.ToTable(MenClothingShopConsts.DbTablePrefix + "YourEntities", MenClothingShopConsts.DbSchema);

@@ -59,6 +59,8 @@
     "Permission:Exports": "Tạo phiếu nhập",
     "Permission:Export.Create": "Tạo phiếu nhập",
     "Permission:Export.Cancel": "Hủy phiếu nhập",
-    "MenClothingShop:0001": "Trạng thái phiếu nhập không hợp lệ: status"
+    "MenClothingShop:0001": "Trạng thái phiếu nhập không hợp lệ: status",
+    "MenClothingShop:0002": "Nhà cung cấp đã tồn tại mặt hàng: {clotheName}",
+    "MenClothingShop:0003": "Đã tồn tại nhà cung cấp với tên này: {supplierName}"
   }
 }

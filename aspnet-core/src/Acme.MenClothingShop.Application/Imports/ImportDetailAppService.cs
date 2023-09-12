@@ -41,7 +41,6 @@ namespace Acme.MenClothingShop.Imports
 
                 await _importDetailRepo.InsertAsync(createdDetail, autoSave: true);  
 
-
             }
         }
 

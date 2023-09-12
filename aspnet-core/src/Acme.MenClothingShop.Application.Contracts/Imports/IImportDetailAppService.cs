@@ -8,7 +8,7 @@ using Volo.Abp.Application.Services;
 
 namespace Acme.MenClothingShop.Imports
 {
-    public interface IImportDetailAppService :IApplicationService
+    public interface IImportDetailAppService : IApplicationService
     {
         public Task<PagedResultDto<ImportClotheListDto>> GetClotheList(GetClotheListDto input);
 

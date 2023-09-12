@@ -21,5 +21,6 @@ public class MenClothingShopApplicationAutoMapperProfile : Profile
         CreateMap<Import, ImportDto>();
         CreateMap<Supllier, SupplierDto>();
         CreateMap<CreateUpdateSupplierDto, Supllier>();
+        CreateMap<SupplierClothe, SupplierClotheDto>();
     }
 }
