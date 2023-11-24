@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Acme.MenClothingShop.Clothes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,13 @@ namespace Acme.MenClothingShop.Suppliers
             int skipCount,
             int maxResultCount,
             string sorting
-            );
+        );
+
+        public Task<List<SupplierClothe>> GetClotheListBySupplier(
+            Guid maNCC,
+            int skipCount,
+            int maxResultCount,
+            string sorting
+        );
     }
 }

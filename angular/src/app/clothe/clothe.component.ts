@@ -2,7 +2,7 @@ import { ListService, PagedAndSortedResultRequestDto, PagedResultDto, validateRe
 import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ClotheDto, ClotheService, clotheMaterialOptions, clotheTypeOptions } from '@proxy/clothes';
+import { ClotheDto, ClotheService, CreateUpdateClotheDto, clotheMaterialOptions, clotheTypeOptions } from '@proxy/clothes';
 
 @Component({
   selector: 'app-clothe',
@@ -22,23 +22,25 @@ export class ClotheComponent implements OnInit {
 
   isModalOpen = false; //step 3
 
+  imageUrl = "assets/images/testing.png";
+
   constructor(public readonly list: ListService, private clotheService: ClotheService, private fb: FormBuilder, private confirmation: ConfirmationService) { }
 
   ngOnInit(): void {
     const clotheStreamCreator = (query: PagedAndSortedResultRequestDto) => this.clotheService.getList(query);
-    
+
     this.list.hookToQuery(clotheStreamCreator).subscribe((response) => {
       this.clothe = response;
     });
   }
-  
-  createClothe(){ //step 3
+
+  createClothe() { //step 3
     this.selectedClothe = {} as ClotheDto;
     this.buildForm();
     this.isModalOpen = true;
   }
 
-  editClothe(id: string){ 
+  editClothe(id: string) {
     this.clotheService.get(id).subscribe((clothe) => {
       this.selectedClothe = clothe;
       this.buildForm();
@@ -46,19 +48,34 @@ export class ClotheComponent implements OnInit {
     });
   }
 
-  deleteClothe(id: string){
+  deleteClothe(id: string) {
     this.confirmation.warn('::AreYouSureToDelete', '::AreYouSure').subscribe((status) => {
-      if(status == Confirmation.Status.confirm){
+      if (status == Confirmation.Status.confirm) {
         this.clotheService.delete(id).subscribe(() => this.list.get());
       }
     });
   }
 
-  buildForm(){
+  onImageSelect(file: FileList) {
+    let fileType = file[0].type;
+
+    if (fileType.match(/image\/*/)) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file[0]);
+      reader.onload = (event: any) => {
+        this.imageUrl = event.target.result;
+      }
+    }
+    else {
+      alert("Xin hãy chọn đúng định dạng ảnh!");
+    }
+  }
+
+  buildForm() {
     this.form = this.fb.group({
       tenMH: [this.selectedClothe.tenMH || '', Validators.required],
       sizeMH: [this.selectedClothe.sizeMH || '', Validators.required],
-      soLuongMH: [this.selectedClothe.soLuongMH || null, Validators.required],
+      soLuongMH: [this.selectedClothe.soLuongMH || null, [Validators.required, Validators.min(1)]],
       loaiMH: [this.selectedClothe.loaiMH || null, Validators.required],
       chatLieuMH: [this.selectedClothe.chatLieuMH || null, Validators.required],
       giaMH: [this.selectedClothe.giaMH || null, Validators.required],
@@ -73,13 +90,23 @@ export class ClotheComponent implements OnInit {
       return;
     }
 
-    const request = this.selectedClothe.id ? this.clotheService.update(this.selectedClothe.id, this.form.value) : this.clotheService.create(this.form.value);
+    const dto = this.form.value as CreateUpdateClotheDto;
+    dto.anhMH = this.imageUrl;
+
+    const request = this.selectedClothe.id ? this.clotheService.update(this.selectedClothe.id, dto) : this.clotheService.create(dto);
 
     request.subscribe(() => {
       this.isModalOpen = false;
       this.form.reset();
       this.list.get();
+      this.imageUrl = "assets/images/testing.png";
     });
   }
 
+  close() {
+    this.imageUrl = "assets/images/testing.png";
+    this.isModalOpen = false;
+    this.form.reset();
+    this.list.get();
+  }
 }

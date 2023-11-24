@@ -21,7 +21,7 @@ namespace Acme.MenClothingShop.Suppliers
 
         public async Task<SupplierClothe> CreateAsync([NotNull]Guid maNCC, [NotNull] Guid maMH)
         {
-            var foundSupplieClothe = await _supplierClotheRepository.GetAsync(x =>  x.MaNCC == maNCC && x.MaMH == maMH );
+            var foundSupplieClothe = await _supplierClotheRepository.FindAsync(x =>  x.MaNCC == maNCC && x.MaMH == maMH );
 
             if (foundSupplieClothe != null)
             {

@@ -1,59 +1,45 @@
 <div class="card">
     <div class = "card-header">
+        <button class="btn btn-success button" (click)="openBootstrapModal(null)" id="createImportBtn">Tạo phiếu nhập</button>
     </div>
 
     <div class="card-body" id="mainContent"> 
-        <div class = "col col-md-6">
-            <h5 class="section0">
-                Nhà cung cấp
-            </h5>
-            <select class="supplierSelection" id="supplierSelection" >
-                <option [ngValue]="null">Chọn 1 nhà cung cấp</option>
-                <option [ngValue]="supplier.tenNCC" *ngFor="let supplier of supplierList.items">{{ supplier.tenNCC }}</option>
-            </select>
-        </div>
-        <div class = "col col-md-6">
-            <h5 class = "section1">
+        <div class = "col col-md-12">
+            <h1 class = "section1">
                 {{ '::Menu:Clothes' | abpLocalization }}
-            </h5>
-        </div>                           
-        <ngx-datatable [rows]="clotheList.items" [count]="clotheList.totalCount" [list]="list" default class="clotheListTable">
-            <ngx-datatable-column [name] = "'::TenMH' | abpLocalization" prop="tenMH"></ngx-datatable-column>
-            <ngx-datatable-column [name] = "'::SizeMH' | abpLocalization" prop = "sizeMH"></ngx-datatable-column>
-            <ngx-datatable-column [name] = "'::TonKho' | abpLocalization" prop = "tonKho"></ngx-datatable-column>
-            <ngx-datatable-column [name] = "'::SLTonKhoToiThieu' | abpLocalization" prop = "slTonKhoToiThieu"></ngx-datatable-column>
-            <ngx-datatable-column [name]="'::Action' | abpLocalization" [maxWidth]="150" [sortable]="false">
-                <ng-template let-row="row" ngx-datatable-cell-template>
-                    <button (click)="addClothe(row.id)">
-                        {{ '::Add' | abpLocalization }}
+            </h1>
+        </div>     
+        <ngx-datatable [rows]="importList.items" [count]="importList.totalCount" [list]="list" default class="importListTable">
+            <ngx-datatable-column [name] = "'::MaPN' | abpLocalization" prop="id"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::TenNCC' | abpLocalization" prop = "tenNCC"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::NguoiTaoPhieu' | abpLocalization" prop = "userId"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::NgayNhap' | abpLocalization" prop = "ngayNhap"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::TinhTrangPN' | abpLocalization" prop = "tinhTrangPN"></ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::Actions' | abpLocalization" [minWidth]="150" [sortable]="false">
+                <ng-template let-row="row" ngx-datatable-cell-template class="centerText">
+                    <button class="button btn btn-warning" (click)="openBootstrapModal(row.id)">
+                        {{ '::UpdateImport' | abpLocalization }}
                     </button>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [name]="'::Action' | abpLocalization" [maxWidth]="150" [sortable]="false">
-                <ng-template let-row="row" ngx-datatable-cell-template>
-                    <button (click)="editClothe(row.id)">
-                        {{ '::Edit' | abpLocalization }}
+            <ngx-datatable-column [name]="'::Action' | abpLocalization" [minWidth]="150" [sortable]="false">
+                <ng-template let-row="row" ngx-datatable-cell-template class="centerText">
+                    <button class="button btn btn-danger" (click)="cancelImport(row.id)">
+                        {{ '::DeleteImport' | abpLocalization }}
                     </button>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [name]="'::Action' | abpLocalization" [maxWidth]="150" [sortable]="false">
-                <ng-template let-row="row" ngx-datatable-cell-template>
-                    <button (click)="deleteClothe(row.id)">
-                        {{ '::Delete' | abpLocalization }}
-                    </button>
-                </ng-template>
-            </ngx-datatable-column>
-        </ngx-datatable>                  -->
+        </ngx-datatable>     
     </div>
 
     <div class="card-footer">       
-        <div><button class="btn btn-success" (click)="openBootstrapModal()" id="createImportBtn">Tạo phiếu nhập</button></div>
+        
     </div>
 </div>
 
 <abp-modal [(visible)]="isModalOpen">
     <ng-template #abpHeader>
-        <h3>{{ (action == "edit" ? '::Edit' : '::Add') | abpLocalization }}</h3>
+        <h1>{{ (action == "edit" ? '::Edit' : '::Add') | abpLocalization }}</h1>
     </ng-template>
 
     <ng-template #abpBody> 
@@ -82,72 +68,123 @@
           {{ '::Close' | abpLocalization }}
         </button>
   
-        <button class="btn-primary" (click)="save()" [disabled]="form.invalid">
+        <button class="btn btn-primary" (click)="saveClothe()" [disabled]="form.invalid">
           <i class="fa fa-check mr-1"></i>
           {{ '::Save' | abpLocalization }}
         </button>
       </ng-template>
 </abp-modal>
+
+
   
   <!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog">
+  <div class="modal w-half-full h-half-full" id="myModal">
+    <div class="modal-dialog w-half-full h-half-full">
       <div class="modal-content">
   
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Hành động</h4>
+          <h1 class="modal-title">Hành động</h1>
           <button type="button" class="btn-close" (click)="closeBootstrapModal()"></button>
         </div>
   
         <!-- Modal body -->
         <div class="modal-body">
-            <div class="selectedClothes">
-                <div>
-                    <h5>Danh sách mặt hàng đã chọn</h5>
+            <div class="modalBodySection">
+                <div class="section">
+                    <div class = "col col-md-6">
+                        <h2 class="section0">
+                            Nhà cung cấp
+                        </h2>
+                        <select class="supplierSelection" id="supplierSelection" [(ngModel)]="selectedSupplier" (change)="changeSupplier()" class="form-control selectWidth">
+                            <option [ngValue]="undefined">Chọn 1 nhà cung cấp</option>
+                            <option [ngValue]="supplier" *ngFor="let supplier of supplierList.items">{{ supplier.tenNCC }}</option>
+                        </select>
+                    </div>
                 </div>
-                <table class="selectedClothesTable">
-                    <tr>
-                        <th class="tenMHSelected">Tên</th>
-                        <th class="sizeMHSelected">Kích cỡ</th>
-                        <th class="soLuongNhapSelected">Số lượng nhập</th>
-                        <th class="giaNhapSelected">Giá nhập</th>
-                        <th class="thanhTienNhapSelected">Thành tiền nhập</th>
-                    </tr>
-                    <tr *ngFor="let clothe of selectedClotheListToDisplay">
-                        <td>{{clothe.tenMH}}</td>
-                        <td>{{clothe.sizeMH}}</td>
-                        <td>{{clothe.soLuongNhap}}</td>
-                        <td>{{clothe.giaNhap}}</td>
-                        <td>{{clothe.thanhTienNhap}}</td>
-                    </tr>
-                </table>      
+                <div class="section d-flex flex-column">
+                    <div class="clothesSelectionItem flex-fill" id="left-item">
+                        <h2>Danh sách mặt hàng</h2>
+                        <ngx-datatable [rows]="clotheList.items" [count]="clotheList.totalCount" [list]="list" class="clotheListTable w-full h-full " default>
+                            <ngx-datatable-column [name] = "'::TenMH' | abpLocalization" prop="tenMH"></ngx-datatable-column>
+                            <ngx-datatable-column [name] = "'::SizeMH' | abpLocalization" prop = "sizeMH"></ngx-datatable-column>
+                            <ngx-datatable-column [name] = "'::TonKho' | abpLocalization" prop = "tonKho"></ngx-datatable-column>
+                            <ngx-datatable-column [name] = "'::SLTonKhoToiThieu' | abpLocalization" prop = "slTonKhoToiThieu"></ngx-datatable-column>
+                            <ngx-datatable-column [name] = "'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <button class="smallBtn" (click)="addClothe(row.id)">
+                                        {{ '::Add' | abpLocalization }}
+                                    </button>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <button class="smallBtn" (click)="editClothe(row.id)">
+                                        {{ '::Edit' | abpLocalization }}
+                                    </button>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <button class="smallBtn" (click)="deleteClothe(row.id)">
+                                        {{ '::Delete' | abpLocalization }}
+                                    </button>
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </ngx-datatable> 
+                    </div>
+                    <div class="clothesSelectionItem flex-fill" id="right-item">
+                        <div>
+                            <h2>Danh sách mặt hàng đã chọn</h2>
+                        </div>
+                        <ngx-datatable [rows]="selectedClotheListToDisplay" [count]="selectedClotheListToDisplay.length" [list]="list" class="clotheListTable w-full h-full" default>
+                            <ngx-datatable-column [name] = "'::TenMH' | abpLocalization" prop="tenMH"></ngx-datatable-column>
+                            <ngx-datatable-column [name] = "'::SizeMH' | abpLocalization" prop = "sizeMH"></ngx-datatable-column>
+                            <ngx-datatable-column [name] = "'::SoLuongNhap' | abpLocalization" prop = "soLuongNhap"></ngx-datatable-column>
+                            <ngx-datatable-column [name] = "'::GiaNhap' | abpLocalization" prop = "giaNhap"></ngx-datatable-column>
+                            <ngx-datatable-column [name] = "'::ThanhTienNhap' | abpLocalization" prop = "thanhTienNhap"></ngx-datatable-column>
+                            <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <button class="smallBtn" (click)="editClothe(row.maMH)">
+                                        {{ '::Edit' | abpLocalization }}
+                                    </button>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <button class="smallBtn" (click)="deleteClothe(row.maMH)">
+                                        {{ '::Delete' | abpLocalization }}
+                                    </button>
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </ngx-datatable>   
+                    </div>
+                </div>
             </div>
 
-            <div class="importInfo" >
-
-                <div>
-                    <h5>Thông tin phiếu nhập</h5>
+            <div class="importInfo d-flex flex-column justify-content-center" >
+                <div class="me-auto">
+                    <h2>Thông tin phiếu nhập</h2>
                 </div>
                 <form id="import-form">
                     <div class="form-group">
-                        <label for="import-supplier">Nhà cung cấp</label><span> * </span>
-                        <input type="text" id="import-supplier" class="form-control" readonly/>
-                    </div>
-                    <div class="form-group">
-                        <label for="import-creator">Người tạo</label><span> * </span>
+                        <label for="import-creator">Người tạo</label>
                         <input type="text" id="import-creator" class="form-control" readonly/>
                     </div>
                     <div class="form-group">
-                        <label for="import-total">Tổng tiền</label><span> * </span>
+                        <label for="import-supplier">Nhà cung cấp</label>
+                        <input type="text" id="import-supplier" class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label for="import-total">Tổng tiền</label>
                         <input type="number" id="import-total" class="form-control" readonly/>
                     </div>
                     <div class="form-group">
-                        <label for="import-status">Tình trạng phiếu nhập</label><span> * </span>
+                        <label for="import-status">Tình trạng phiếu nhập</label>
                         <input type="text" id="import-status" class="form-control" readonly/>
                     </div>
                     <div class="form-group">
-                        <label for="import-id">Mã phiếu nhập</label><span> * </span>
+                        <label for="import-id">Mã phiếu nhập</label>
                         <input type="text" id="import-id" class="form-control" readonly/>
                     </div>
                 </form>
@@ -157,8 +194,8 @@
   
         <!-- Modal footer -->
         <div class="modal-footer">
-            <button type="button" class="btn-primary" (click)="createImport()">Tạo phiếu nhập</button>
-            <button type="button" class="btn btn-danger" (click)="cancelImport()">Hủy phiếu nhập</button>
+            <button type="button" class="btn btn-primary" (click)="saveImport()">{{ (selectedImport.id == undefined ? '::CreateImport' : '::UpdateImport') | abpLocalization}}</button>
+            <button type="button" class="btn btn-danger" (click)="closeBootstrapModal()">Đóng</button>
         </div>
   
       </div>

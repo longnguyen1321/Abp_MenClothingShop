@@ -49,6 +49,12 @@ function configureRoutes(routesService: RoutesService) {
         parentName: '::Menu:MenClothingShop',
         layout: eLayoutType.application,
         
+      },
+      {
+        path: '/suppliers',
+        name: '::Menu:Suppliers',
+        parentName: '::Menu:MenClothingShop',
+        layout: eLayoutType.application,
       }
     ]);
   };

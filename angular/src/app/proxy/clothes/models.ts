@@ -1,4 +1,4 @@
-import type { AuditedEntityDto, PagedAndSortedResultRequestDto } from '@abp/ng.core';
+import type { AuditedEntityDto } from '@abp/ng.core';
 import type { ClotheType } from './clothe-type.enum';
 import type { ClotheMaterial } from './clothe-material.enum';
 
@@ -26,7 +26,4 @@ export interface CreateUpdateClotheDto {
   chatLieuMH: ClotheMaterial;
   anhMH?: string;
   moTaMH: string;
-}
-
-export interface GetClotheListDto extends PagedAndSortedResultRequestDto {
 }

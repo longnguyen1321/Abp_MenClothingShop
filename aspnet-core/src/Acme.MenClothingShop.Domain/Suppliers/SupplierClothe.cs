@@ -14,8 +14,8 @@ namespace Acme.MenClothingShop.Suppliers
         public Guid MaNCC { get; set; }
 
         public override object[] GetKeys()
-        {
-            throw new NotImplementedException();
+        { 
+            return new object[] { MaNCC, MaNCC };
         }
     }
 }

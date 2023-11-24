@@ -35,33 +35,18 @@ namespace Acme.MenClothingShop.Imports
             };
         }
 
-        public async Task UpdateClotheStorageAsync(Clothe selectedClothe, Guid maPN, int soLuongNhap, string action)
+        public async Task UpdateClotheStorageAsync(Clothe selectedClothe, Guid maPN, int soLuongNhap)
         {
             var selectedImport = await _importRepository.FindAsync(maPN);
 
-            //Kiểm tra tình trạng phiếu nhập phù hợp với action
-            if(action == "create")
+            //Kiểm tra tình trạng phiếu nhập 
+            if(selectedImport.TinhTrangPX == "Đã hủy")
             {
-                if(selectedImport.TinhTrangPX == "Đã hủy")
-                {
-                    throw new InvalidImportStatus(selectedImport.TinhTrangPX);
-                }
-                else
-                {
-                    _clotheManager.UpdateClotheStorage(selectedClothe, soLuongNhap, "add");
-                }
+                throw new InvalidImportStatus(selectedImport.TinhTrangPX);
             }
-
-            if(action == "cancel")
+            else
             {
-                if (selectedImport.TinhTrangPX == "Đã nhập")
-                {
-                    throw new InvalidImportStatus(selectedImport.TinhTrangPX);
-                }
-                else
-                {
-                    _clotheManager.UpdateClotheStorage(selectedClothe, soLuongNhap, "minus");
-                }
+                _clotheManager.UpdateClotheStorage(selectedClothe, soLuongNhap);
             }
         }
     }

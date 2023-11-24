@@ -10,10 +10,12 @@ namespace Acme.MenClothingShop.Imports
 {
     public interface IImportDetailAppService : IApplicationService
     {
-        public Task<PagedResultDto<ImportClotheListDto>> GetClotheList(GetClotheListDto input);
+        public Task<List<ToDisplayImportDetailDto>> GetImportDetailListToDisplay(Guid maMH);
 
         public Task CreateAsync(CreateManyImportDetailsDto impClotheList);
 
-        public Task UpdateAsync(Guid maPN);
+        public Task UpdateImportClotheStorageAsync(Guid maPN);
+
+        public Task UpdateAsync(Guid maPN, UpdateManyImportDetailDto input);
     }
 }

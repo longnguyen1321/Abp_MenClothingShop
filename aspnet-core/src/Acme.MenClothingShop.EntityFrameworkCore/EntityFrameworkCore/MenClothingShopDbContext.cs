@@ -123,10 +123,11 @@ public class MenClothingShopDbContext :
         });
 
         builder.Entity<Supllier>(c =>
-        { //Nhớ thêm index unique name
+        {
             c.ToTable(MenClothingShopConsts.DbTablePrefix + "Suppliers", MenClothingShopConsts.DbSchema);
             c.ConfigureByConvention();
             c.Property(x => x.TenNCC).IsRequired().HasMaxLength(128);
+            c.HasIndex(s => s.TenNCC).IsUnique();
         });
 
         builder.Entity<Import>(c =>
@@ -147,7 +148,7 @@ public class MenClothingShopDbContext :
             //c.Property(d => d.GiaNhap).HasColumnType("decimal(18,2");
             //c.Property(d => d.ThanhTienNhap).HasColumnType("decimal(18,2)");
         });
-
+        
         builder.Entity<SupplierClothe>(c =>
         {
             c.HasKey(compositeKey => new { compositeKey.MaNCC, compositeKey.MaMH });

@@ -13,8 +13,8 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APP_ROUTE_PROVIDER } from './route.provider';
-import { ImportCartComponent } from './import-cart/import-cart.component';
-import { ClotheComponent } from './clothe/clothe.component';
+import { ImportActionComponent } from './import-action/import-action.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   imports: [
@@ -32,7 +32,7 @@ import { ClotheComponent } from './clothe/clothe.component';
     SettingManagementConfigModule.forRoot(),
     ThemeBasicModule.forRoot(),
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, MessagesComponent],
   providers: [APP_ROUTE_PROVIDER],
   bootstrap: [AppComponent],
 })

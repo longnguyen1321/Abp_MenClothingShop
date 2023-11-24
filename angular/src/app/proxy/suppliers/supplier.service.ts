@@ -2,6 +2,8 @@ import type { CreateUpdateSupplierDto, SupplierDto } from './models';
 import { RestService } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
+import type { ClotheDto } from '../clothes/models';
+import type { ImportDto } from '../imports/models';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +38,22 @@ export class SupplierService {
       method: 'GET',
       url: '/api/app/supplier',
       params: { skipCount: input.skipCount, maxResultCount: input.maxResultCount, sorting: input.sorting },
+    },
+    { apiName: this.apiName });
+
+  getSupplierClothes = (maNCC: string, input: PagedAndSortedResultRequestDto) =>
+    this.restService.request<any, PagedResultDto<ClotheDto>>({
+      method: 'GET',
+      url: '/api/app/supplier/supplier-clothes',
+      params: { maNCC, skipCount: input.skipCount, maxResultCount: input.maxResultCount, sorting: input.sorting },
+    },
+    { apiName: this.apiName });
+
+  getSupplierImports = (maNCC: string, input: PagedAndSortedResultRequestDto) =>
+    this.restService.request<any, PagedResultDto<ImportDto>>({
+      method: 'GET',
+      url: '/api/app/supplier/supplier-imports',
+      params: { maNCC, skipCount: input.skipCount, maxResultCount: input.maxResultCount, sorting: input.sorting },
     },
     { apiName: this.apiName });
 

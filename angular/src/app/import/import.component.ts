@@ -1,13 +1,14 @@
-import { ConfigStateService, ListResultDto, ListService, PagedResultDto, ApplicationConfigurationDto } from '@abp/ng.core';
-import { ConfirmationService } from '@abp/ng.theme.shared';
+import { ConfigStateService, ListResultDto, ListService, PagedResultDto, ApplicationConfigurationDto, PagedAndSortedResultRequestDto } from '@abp/ng.core';
+import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
 import { query } from '@angular/animations';
 import { Console } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClotheDto, ClotheService } from '@proxy/clothes';
 import { ImportDetailService, ImportService } from '@proxy/imports';
-import { CancelImportDto, CreateImportDetailDto, CreateImportDto, CreateManyImportDetailsDto, ImportClotheListDto } from '@proxy/imports/models';
+import { CancelImportDto, CreateImportDetailDto, CreateImportDto, CreateManyImportDetailsDto, ImportDto, UpdateImportDetailDto, UpdateImportDto, UpdateManyImportDetailDto } from '@proxy/imports/models';
 import { SupplierDto, SupplierService } from '@proxy/suppliers';
+
 @Component({
   selector: 'app-import',
   templateUrl: './import.component.html',
@@ -15,12 +16,13 @@ import { SupplierDto, SupplierService } from '@proxy/suppliers';
   providers: [ListService],
 })
 export class ImportComponent implements OnInit {
-  clotheList = { items: [], totalCount: 0 } as PagedResultDto<ImportClotheListDto>;
-  selectedClothe = { } as ClotheDto;
-
+  clotheList = { items: [], totalCount: 0 } as PagedResultDto<ClotheDto>;
+  importList = { items: [], totalCount: 0} as PagedResultDto<ImportDto>;
   supplierList = { items: [], totalCount: 0 } as PagedResultDto<SupplierDto>;
 
-  parentPro = "Thuộc tính từ parent";
+  selectedClothe = { } as ClotheDto;
+  selectedImport = {} as ImportDto;
+
   selectedClotheListToDisplay = [];
   action = null;
   currentUser = {} as ApplicationConfigurationDto["currentUser"];
@@ -29,6 +31,11 @@ export class ImportComponent implements OnInit {
   importTotal: number;
 
   isModalOpen = false;
+  condition = true;
+  ngIf = true;
+
+  selectedSupplier: any;
+  oldSelectedSupplier: any;
 
   constructor(private importDetailService: ImportDetailService, 
     public readonly list: ListService, 
@@ -40,39 +47,80 @@ export class ImportComponent implements OnInit {
     private importService: ImportService
     ) { }
 
-  ngOnInit(): void { 
-    const clotheStreamCreator = (query) => this.importDetailService.getClotheListByInput(query);
+  ngOnInit(): void {
+    const importStreamCretor = (query) => this.importService.getImportListToDisplayByInput(query);
+    this.list.hookToQuery(importStreamCretor).subscribe((value) => {
+      this.importList = value;
 
-    this.list.hookToQuery(clotheStreamCreator).subscribe((response) => {
-      this.clotheList = response;
-    });
-    const supplierStreamCreator = (query2) => this.supplierService.getList(query2);
+      const supplierStreamCreator = (query2) => this.supplierService.getList(query2);
 
-    this.list.hookToQuery(supplierStreamCreator).subscribe((response) => {
-      this.supplierList = response;
-    }) 
+      this.list.hookToQuery(supplierStreamCreator).subscribe((response) => {
+        this.supplierList = response;
 
-    const response = this.configService.getOne("currentUser.id");
+        this.configService.getOne$("currentUser").subscribe(user => {
+          this.currentUser = user;
+        })
+      }) 
+    })
+  }
 
-    this.configService.getOne$("currentUser").subscribe(response => {
-      this.currentUser = response;
-      console.log(this.currentUser)
+  resetSelectedValue(){
+    this.selectedClotheListToDisplay = [];
+    this.selectedSupplier = undefined;
+    this.oldSelectedSupplier = undefined;
+    this.selectedImport = {} as ImportDto;
+    this.importTotal = 0;
+    this.clotheList = { items: [], totalCount: 0 } as PagedResultDto<ClotheDto>;
+
+    document.forms['import-form']['import-supplier'].value = "";
+    document.forms['import-form']['import-creator'].value = "";
+    document.forms['import-form']['import-total'].value = "";
+    document.forms['import-form']['import-status'].value = "";
+    document.forms['import-form']['import-id'].value = "";
+
+    const importStreamCretor = (query) => this.importService.getImportListToDisplayByInput(query);
+    this.list.hookToQuery(importStreamCretor).subscribe((value) => {
+      this.importList = value;
     })
   }
   
-  openBootstrapModal(){debugger
+  openBootstrapModal(importId: string){ console.log(this.selectedSupplier)
+    console.log(this.selectedImport)
     const modelDiv = document.getElementById('myModal');
     
     if(modelDiv != null){
       modelDiv.style.display = 'block';
 
-      this.importTotal = Object.keys(this.selectedClotheListToDisplay).reduce((total: any, key: string | number) => {
-        return total + this.selectedClotheListToDisplay[key].thanhTienNhap;
-      }, 0); //Tính tổng tiền phiếu nhập mỗi khi bấm nút tạo PN
+      if(importId != null){
+        this.importService.getImport(importId).subscribe((value) => {
+          this.selectedImport = value;
 
-      document.forms['import-form']['import-supplier'].value = (<HTMLInputElement>document.getElementById('supplierSelection')).value;
-      document.forms['import-form']['import-creator'].value = this.currentUser.name;
-      document.forms['import-form']['import-total'].value = this.importTotal;
+          //Hiển thị Nhà cung cấp của Phiếu nhập lên Tag Select
+          const thisImportSupplierIndex = (this.supplierList.items.findIndex(x => x.id == value.maNCC)) + 1; console.log(thisImportSupplierIndex);
+          (<HTMLSelectElement> document.getElementById('supplierSelection')).selectedIndex = thisImportSupplierIndex; 
+
+          this.supplierService.get(value.maNCC).subscribe((response) => {
+            document.forms['import-form']['import-supplier'].value = response.tenNCC;
+            document.forms['import-form']['import-creator'].value = value.userId;
+            document.forms['import-form']['import-total'].value = value.tongTienNhap;
+            document.forms['import-form']['import-status'].value = value.tinhTrangPX;
+            document.forms['import-form']['import-id'].value = value.id;
+
+            this.selectedSupplier = response;
+            this.oldSelectedSupplier = this.selectedSupplier;
+            this.changeSupplier();
+
+            this.importDetailService.getImportDetailListToDisplayByMaMH(value.id).subscribe((response2) => {
+              this.selectedClotheListToDisplay = response2;
+              console.log(this.selectedClotheListToDisplay)
+            });
+          });
+        });
+      }
+      else{
+        this.selectedImport = {} as ImportDto;
+      }
+
     }
   }
 
@@ -81,6 +129,8 @@ export class ImportComponent implements OnInit {
 
     if(modelDiv != null){
       modelDiv.style.display = 'none';
+
+      this.resetSelectedValue();
     }
   }
 
@@ -89,10 +139,65 @@ export class ImportComponent implements OnInit {
     console.log(option);
   }
 
-  createImport(){ debugger
-    const selectedSupplier = this.supplierList.items.find(x => x.tenNCC == (<HTMLInputElement>document.getElementById('supplierSelection')).value);
+  changeSupplier(){ console.log(this.selectedSupplier)
+    if(this.selectedSupplier != undefined){ //Nếu Tag Select chọn giá trị khác Undefined - Gía trị rỗng
+      //Khi Danh sách mặt hàng đã chọn tồn tại mặt hàng
+      if(this.selectedClotheListToDisplay.length > 0){
+        this.confirmation.warn('Khi thay đổi nhà cung cấp sẽ xóa những sản phẩm đã chọn không thuộc nhà cung cấp đó!', '::AreYouSure').subscribe((status) => {
+          if(status == Confirmation.Status.confirm){
+            // var index = (<HTMLSelectElement> document.getElementById('supplierSelection')).selectedIndex - 1;
 
-    const createImport = { maNCC: selectedSupplier.id, tongTienNhap:  this.importTotal} as CreateImportDto;
+            // this.supplierService.get(this.supplierList.items[index].id).subscribe((supplier) => {
+            //   this.selectedSupplier = supplier;
+
+            this.oldSelectedSupplier = this.selectedSupplier;
+            document.forms['import-form']['import-supplier'].value = this.selectedSupplier.tenNCC;            
+
+            const clotheStreamCreator = (query: PagedAndSortedResultRequestDto) => this.supplierService.getSupplierClothes(this.selectedSupplier.id, query);
+  
+            this.list.hookToQuery(clotheStreamCreator).subscribe((value) => {
+              this.clotheList = value;      
+
+              this.selectedClotheListToDisplay.forEach((element) => { 
+                let deletedClotheIndex = this.clotheList.items.findIndex(y => y.id == element.maMH);
+
+                if(deletedClotheIndex != -1){
+                  this.selectedClotheListToDisplay.splice(deletedClotheIndex, 1);
+                }
+              });
+            });
+          }
+          //Nếu không đồng ý, set lại giá trị của Tag select
+          else{ console.log(this.oldSelectedSupplier)
+            //Nếu giá trị nhà cung cấp trước là Undefined
+            if(this.oldSelectedSupplier == undefined){ console.log("NCC trước là Undefined");
+              (<HTMLSelectElement> document.getElementById('supplierSelection')).selectedIndex = 0; 
+              return;
+            }
+
+            const index = this.supplierList.items.findIndex(x => x.id == this.oldSelectedSupplier.id) + 1; //Do tag Select giá trị khác Undefined bắt đầu từ 1
+
+            (<HTMLSelectElement> document.getElementById('supplierSelection')).selectedIndex = index;
+          }
+        });
+      }
+      //Khi Danh sách mặt hàng đã chọn chưa tồn tại mặt hàng
+      else{
+        this.oldSelectedSupplier = this.selectedSupplier;
+        document.forms['import-form']['import-supplier'].value = this.selectedSupplier.tenNCC;
+
+        const clotheStreamCreator = (query: PagedAndSortedResultRequestDto) => this.supplierService.getSupplierClothes(this.selectedSupplier.id, query);
+
+        this.list.hookToQuery(clotheStreamCreator).subscribe((value) => {
+          this.clotheList = value; 
+        })
+      }
+    }
+  }
+
+  createImport(){ 
+    if(this.selectedClotheListToDisplay != undefined && this.selectedClotheListToDisplay.length > 0){
+      const createImport = { maNCC: this.selectedSupplier.id, tongTienNhap:  this.importTotal} as CreateImportDto;
       this.importService.create(createImport).subscribe((response) => {
         const returnedImport = response;
 
@@ -102,21 +207,62 @@ export class ImportComponent implements OnInit {
         });
 
         const createManyDetail = { importDetails:selectedClothesList } as CreateManyImportDetailsDto;
-        console.log(createManyDetail);
+
         this.importDetailService.create(createManyDetail).subscribe();
+
+        document.forms['import-form']['import-creator'].value = response.userId;
+        document.forms['import-form']['import-id'].value = response.id;
+        document.forms['import-form']['import-status'].value = response.tinhTrangPX;
+        document.forms['import-form']['import-supplier'].value = response.maNCC;
       });
-      
-    
+    }
+    else{
+      alert("Chưa chọn mặt hàng cho phiếu nhập!");
+    }
   }
 
-  cancelImport(){
-    const updateDto = { maPN: (<HTMLInputElement>document.getElementById('import-id')).value } as CancelImportDto
-    this.importService.update( updateDto ).subscribe((response) => {
+  cancelImport(importId: string){
+    const updateDto = { maPN: importId } as CancelImportDto
+    this.importService.updateImportStatus( updateDto ).subscribe((response) => {
       document.forms['import-form']['import-status'].value = response.tinhTrangPX;
     });
   } 
 
-  addClothe(id: string){ 
+  updateImport(){ 
+    const newImportDto = { maNCC: this.selectedSupplier.id, tongTienNhap: this.importTotal } as UpdateImportDto; 
+
+    this.importService.update(this.selectedImport.id, newImportDto).subscribe(() => { 
+      const updateImportDetailDto = { importDetails: [] } as UpdateManyImportDetailDto;
+      this.selectedClotheListToDisplay.forEach(element => {
+        const importDetail = { maPN: this.selectedImport.id, maMH: element.maMH, soLuongNhap: element.soLuongNhap, giaNhap: element.giaNhap } as UpdateImportDetailDto;
+
+        updateImportDetailDto.importDetails.push(importDetail);
+      });
+      console.log(this.selectedImport.id)
+      console.log(updateImportDetailDto)
+      this.importDetailService.update(this.selectedImport.id, updateImportDetailDto).subscribe();
+    });
+  }
+
+  saveImport(){
+    this.confirmation.warn(this.selectedImport.id == undefined ? 'Bạn muốn tạo phiếu nhập?' : "Bạn muốn cập nhập phiếu nhập?", '::AreYouSure').subscribe((response) => {
+      if(response == Confirmation.Status.confirm){
+        if(this.selectedImport.id == undefined){
+          this.createImport();
+        }
+        else{
+          this.updateImport();
+        }
+
+        const clotheStreamCreator = (query: PagedAndSortedResultRequestDto) => this.supplierService.getSupplierClothes(this.selectedSupplier.id, query);
+        this.list.hookToQuery(clotheStreamCreator).subscribe((value) => {
+          this.clotheList = value;
+        });
+      }
+    })
+  }
+  
+  addClothe(id: string){  
     this.clotheService.get(id).subscribe((clothe) => {
       this.selectedClothe = clothe;
       this.action = "add";
@@ -125,7 +271,7 @@ export class ImportComponent implements OnInit {
     })
   }
 
-  editClothe(id: string){
+  editClothe(id: string){ console.log(id)
     this.clotheService.get(id).subscribe((clothe) => {
       this.selectedClothe = clothe;
       this.action = "edit";
@@ -165,6 +311,12 @@ export class ImportComponent implements OnInit {
     let selectecClotheToDisplayIndex = this.selectedClotheListToDisplay.findIndex(y => y.maMH == maMH);
     
     this.selectedClotheListToDisplay.splice(selectecClotheToDisplayIndex, 1);
+
+    this.importTotal = Object.keys(this.selectedClotheListToDisplay).reduce((total: any, key: string | number) => {
+      return total + this.selectedClotheListToDisplay[key].thanhTienNhap;
+    }, 0);
+
+    document.forms['import-form']['import-total'].value = this.importTotal;
   }
 
   updateInList(maMH: string, clothe: CreateImportDetailDto){
@@ -177,25 +329,28 @@ export class ImportComponent implements OnInit {
 
   buildForm(){
     let foundClothe = this.selectedClotheListToDisplay.find(x => x.maMH === this.selectedClothe.id);
+
+    //Nếu mặt hàng này đã được chọn
     if(foundClothe == undefined){
       this.form = this.fb.group({
-        tenMH: [this.selectedClothe.tenMH, Validators.required],
+        tenMH: [this.selectedClothe.tenMH, [Validators.required, Validators.maxLength(128)]],
         sizeMH: [this.selectedClothe.sizeMH, Validators.required],
-        soLuongNhap: [0, Validators.required],
-        giaNhap: [0, Validators.required] 
+        soLuongNhap: [0, [Validators.required, Validators.min(1)]],
+        giaNhap: [0, [Validators.required, Validators.min(0)]] 
       });
     }
+    //Nếu mặt hàng này chưa được chọn
     else{
       this.form = this.fb.group({
-        tenMH: [this.selectedClothe.tenMH, Validators.required],
+        tenMH: [this.selectedClothe.tenMH, [Validators.required, Validators.maxLength(128)]],
         sizeMH: [this.selectedClothe.sizeMH, Validators.required],
-        soLuongNhap: [this.action == "add" ? 0 : foundClothe.soLuongNhap, Validators.required],
-        giaNhap: [this.action == "add" ? 0 : foundClothe.giaNhap, Validators.required] 
+        soLuongNhap: [this.action == "add" ? 0 : foundClothe.soLuongNhap, [Validators.required, Validators.min(1)]],
+        giaNhap: [this.action == "add" ? 0 : foundClothe.giaNhap, [Validators.required, Validators.min(0)]] 
       });
     }
   }
 
-  save(){
+  saveClothe(){
     if (this.form.invalid) {
       return;
     }
@@ -209,6 +364,12 @@ export class ImportComponent implements OnInit {
     else {
       this.deleteFromList(this.selectedClothe.id);
     }
+
+    this.importTotal = Object.keys(this.selectedClotheListToDisplay).reduce((total: any, key: string | number) => {
+      return total + this.selectedClotheListToDisplay[key].thanhTienNhap;
+    }, 0);
+
+    document.forms['import-form']['import-total'].value = this.importTotal;
 
     this.action = null;
     this.isModalOpen = false;

@@ -28,4 +28,6 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.5" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties localization_4menclothingshop_4en_1json__JsonSchema="https://developer.1password.com/schema/ssh-agent-config.json" /></VisualStudio></ProjectExtensions>
+
 </Project>

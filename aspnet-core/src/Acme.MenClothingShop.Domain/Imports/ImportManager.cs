@@ -29,6 +29,24 @@ namespace Acme.MenClothingShop.Imports
             selectedImportET.TinhTrangPX = "Đã hủy";
         }
 
-        
+        public Import CreateSimpleImport([NotNull] Guid maPN, [CanBeNull]Guid? maNCC = null, [CanBeNull] Guid? userId = null, [CanBeNull] DateTime? ngayNhap = null, [CanBeNull] decimal tongTienNhap = 0, [CanBeNull] string tinhTrangPX = "")
+        {
+            if(maNCC == null)
+            {
+                maNCC = Guid.Empty;
+            }
+
+            if(userId == null)
+            {
+                userId = Guid.Empty;
+            }
+
+            if(ngayNhap == null)
+            {
+                ngayNhap = DateTime.Now;
+            }
+
+            return new Import(maPN) { MaNCC = (Guid)maNCC, UserId = (Guid)userId, NgayNhap = (DateTime)ngayNhap, TongTienNhap = (decimal)tongTienNhap, TinhTrangPX = tinhTrangPX };
+        }
     }
 }

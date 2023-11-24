@@ -2,15 +2,15 @@
     <div class = "card-header">
         <div class = "row">
             <div class = "col col-md-6">
-                <h5 class = "card-title">
+                <h2 class = "card-title">
                     {{ '::Menu:Clothes' | abpLocalization }}
-                </h5>
+                </h2>
             </div>
             <div class="text-end col col-md-6">
                 <div class = "text-lg-end pt-2">
-                    <button *abpPermission="'MenClothingShop.Clothes.Create'" id="create" class="btn btn-primary" type ="button" (click)="createClothe()">
+                    <button *abpPermission="'MenClothingShop.Clothes.Create'" id="create" class="btn btn-success" type ="button" (click)="createClothe()">
                         <i class="fa fa-plus mr-1"></i>
-                        <span>{{ "::NewClothe" | abpLocalization}}</span>
+                        <span>{{ "::Add" | abpLocalization}}</span>
                     </button>
                 </div>
             </div>
@@ -30,21 +30,24 @@
                             <i class="fa fa-cog mr-1"></i>{{ '::Actions' | abpLocalization }}
                         </button>
                         <div ngbDropdownMenu>
-                            <div>
-                            <button *abpPermission="'MenClothingShop.Clothes.Edit'" ngbDropdownItem (click)="editClothe(row.id)">
-                                {{ '::Edit' | abpLocalization }}
+                            <button ngbDropdownItem class="btn btn-primary" *abpPermission="'MenClothingShop.Clothes.Edit'" ngbDropdownItem (click)="editClothe(row.id)">
+                                <i class="far fa-edit"></i>
+                                <span>{{ '::Edit' | abpLocalization }}</span>
                             </button>
-                            </div>
-                            <div>
-                            <button *abpPermission="'MenClothingShop.Clothes.Delete'" ngbDropDownItem (click)="deleteClothe(row.id)">
-                                {{ '::Delete' | abpLocalization }}
+                            <button ngbDropdownItem class="btn btn-danger" *abpPermission="'MenClothingShop.Clothes.Delete'" ngbDropDownItem (click)="deleteClothe(row.id)">
+                                <i class="fas fa-trash-alt"></i>
+                                <span>{{ '::Delete' | abpLocalization }}</span>
                             </button>
-                            </div>
                         </div>
                     </div>
                 </ng-template>
             </ngx-datatable-column>
-
+            <ngx-datatable-column [name] = "'::AnhMH' | abpLocalization" prop = "anhMH" class="image-size" [minWidth]="300">
+                <ng-template let-row="row" ngx-datatable-cell-template class="image-size">
+                    <img [src]="row.anhMH" alt="Không có ảnh!" width="24" height="39" class="image-size">
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [name] = "'::MaMH' | abpLocalization" prop="id"></ngx-datatable-column>
             <ngx-datatable-column [name] = "'::TenMH' | abpLocalization" prop="tenMH"></ngx-datatable-column>
             <ngx-datatable-column [name] = "'::SizeMH' | abpLocalization" prop = "sizeMH"></ngx-datatable-column>
             <ngx-datatable-column [name] = "'::SoLuongMH' | abpLocalization" prop = "soLuongMH"></ngx-datatable-column>
@@ -60,7 +63,6 @@
             </ngx-datatable-column>
             <ngx-datatable-column [name] = "'::GiaMH' | abpLocalization" prop = "giaMH"></ngx-datatable-column>
             <ngx-datatable-column [name] = "'::SLTonKhoToiThieu' | abpLocalization" prop = "slTonKhoToiThieu"></ngx-datatable-column>
-            <ngx-datatable-column [name] = "'::AnhMH' | abpLocalization" prop = "anhMH"></ngx-datatable-column>
             <ngx-datatable-column [name] = "'::MoTaMH' | abpLocalization" prop = "moTaMH"></ngx-datatable-column>
         </ngx-datatable>
     </div>
@@ -107,24 +109,24 @@
                 <label for="clothe-min-stock">Số lượng tồn kho tối thiểu</label><span> * </span>
                 <input type="number" id="clothe-min-stock" class="form-control" formControlName="slTonKhoToiThieu" />
             </div>
-            
-            <div class="form-group">
-                <label for="clothe-picture">Chọn ảnh</label><span> * </span>
-                <input type="text" id="clothe-name" class="form-control" formControlName="anhMH" />
-            </div> 
             <div class="form-group">
                 <label for="clothe-description">Giới thiệu</label><span> * </span>
                 <input type="text" id="clothe-description" class="form-control" formControlName="moTaMH" />
             </div>
+            <div class="form-group">
+                <label for="clothe-picture">Chọn ảnh</label><span> * </span>
+                <input type="file" #Image accept="image/*" id="clothe-picture" class="form-control" formControlName="anhMH" (change)="onImageSelect($event.target.files)"/>
+                <img [src]="imageUrl" alt="Không có ảnh" title="Xem trước" class="image-size">
+            </div> 
         </form>
     </ng-template>
   
     <ng-template #abpFooter>
-      <button type="button" class="btn btn-secondary" abpClose>
+      <button class="btn btn-secondary" (click)="close()">
         {{ '::Close' | abpLocalization }}
       </button>
 
-      <button class="btn-primary" (click)="save()" [disabled]="form.invalid">
+      <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
         <i class="fa fa-check mr-1"></i>
         {{ '::Save' | abpLocalization }}
       </button>

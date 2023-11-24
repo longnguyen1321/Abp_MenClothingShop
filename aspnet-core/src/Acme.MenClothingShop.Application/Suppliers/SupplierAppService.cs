@@ -1,4 +1,6 @@
-﻿using Acme.MenClothingShop.EntityFrameworkCore;
+﻿using Acme.MenClothingShop.Clothes;
+using Acme.MenClothingShop.EntityFrameworkCore;
+using Acme.MenClothingShop.Imports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +23,12 @@ namespace Acme.MenClothingShop.Suppliers
         ISupplierAppService //implement the ISupplierAppService
     {
         private readonly SupplierManager _supplierManager;
-        public SupplierAppService(IRepository<Supllier, Guid> repository, SupplierManager supplierManager) : base(repository)
+
+        private readonly ISupplierRepository _supplierRepository;
+        public SupplierAppService(IRepository<Supllier, Guid> repository, SupplierManager supplierManager, ISupplierRepository supplierRepository) : base(repository)
         {
             _supplierManager = supplierManager;
+            _supplierRepository = supplierRepository;
         }
 
         public override async Task<SupplierDto> CreateAsync(CreateUpdateSupplierDto input)
@@ -44,6 +49,28 @@ namespace Acme.MenClothingShop.Suppliers
             await this.Repository.UpdateAsync(foundSupplier, autoSave: true);
 
             return ObjectMapper.Map<Supllier, SupplierDto>(foundSupplier);
+        }
+
+        public async Task<PagedResultDto<ClotheDto>> GetSupplierClothesAsync(Guid maNCC, PagedAndSortedResultRequestDto input)
+        {
+            if (input.Sorting.IsNullOrWhiteSpace())
+            {
+                input.Sorting = nameof(Clothe.TenMH);
+            }
+            var result = await _supplierRepository.GetSupplierClothesAsync(maNCC, input.SkipCount, input.MaxResultCount, input.Sorting);
+
+            return new PagedResultDto<ClotheDto>(result.Count, ObjectMapper.Map<List<Clothe>, List<ClotheDto>>(result));
+        }
+
+        public async Task<PagedResultDto<ImportDto>> GetSupplierImportsAsync(Guid maNCC, PagedAndSortedResultRequestDto input)
+        {
+            if (input.Sorting.IsNullOrWhiteSpace())
+            {
+                input.Sorting = nameof(Import.NgayNhap);
+            }
+            var result = await _supplierRepository.GetSupplierImportsAsync(maNCC, input.SkipCount, input.MaxResultCount, input.Sorting);
+
+            return new PagedResultDto<ImportDto>(result.Count, ObjectMapper.Map<List<Import>, List<ImportDto>>(result));
         }
     }
 }

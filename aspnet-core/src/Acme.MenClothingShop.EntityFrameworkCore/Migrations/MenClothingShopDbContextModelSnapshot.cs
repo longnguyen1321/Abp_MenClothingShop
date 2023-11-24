@@ -306,7 +306,25 @@ namespace Acme.MenClothingShop.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TenNCC")
+                        .IsUnique();
+
                     b.ToTable("AppSuppliers", (string)null);
+                });
+
+            modelBuilder.Entity("Acme.MenClothingShop.Suppliers.SupplierClothe", b =>
+                {
+                    b.Property<Guid>("MaNCC")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MaMH")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("MaNCC", "MaMH");
+
+                    b.HasIndex("MaMH");
+
+                    b.ToTable("AppSupplierClothes", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
@@ -2281,6 +2299,21 @@ namespace Acme.MenClothingShop.Migrations
                     b.HasOne("Acme.MenClothingShop.Imports.Import", null)
                         .WithMany()
                         .HasForeignKey("MaPN")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Acme.MenClothingShop.Suppliers.SupplierClothe", b =>
+                {
+                    b.HasOne("Acme.MenClothingShop.Clothes.Clothe", null)
+                        .WithMany()
+                        .HasForeignKey("MaMH")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Acme.MenClothingShop.Suppliers.Supllier", null)
+                        .WithMany()
+                        .HasForeignKey("MaNCC")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

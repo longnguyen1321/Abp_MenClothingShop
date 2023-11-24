@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Acme.MenClothingShop.Clothes;
+using Acme.MenClothingShop.Imports;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,5 +18,9 @@ namespace Acme.MenClothingShop.Suppliers
         new Task<SupplierDto> CreateAsync(CreateUpdateSupplierDto input);
 
         new Task<SupplierDto> UpdateAsync(Guid id, CreateUpdateSupplierDto input);
+
+        public Task<PagedResultDto<ClotheDto>> GetSupplierClothesAsync(Guid maNCC, PagedAndSortedResultRequestDto input);
+
+        public Task<PagedResultDto<ImportDto>> GetSupplierImportsAsync(Guid maNCC, PagedAndSortedResultRequestDto input);
     }
 }

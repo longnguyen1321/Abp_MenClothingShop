@@ -5,6 +5,7 @@ using Acme.MenClothingShop.Exports;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Scriban.Runtime.Accessors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,21 +29,23 @@ namespace Acme.MenClothingShop.Storages
         public  async Task<PagedResultDto<ClotheStorageDto>> GetAsync(GetClotheStorageListDto input)
         {
             var context =  (MenClothingShopDbContext) await _exportDetailRepository.GetDbContextAsync(); 
-                       
-            var clotheStorageDtoList1 =(from clothe in context.Clothes
+          
+            var clotheStorageDtoList =await (from clothe in context.Clothes
                                        join imp in context.ImportDetails
-                                       on clothe.Id equals imp.MaMH into importedClothe
-                                       
+                                       on clothe.Id equals imp.MaMH
+                                       into importedClothe
+                  
                                        from imp in importedClothe.DefaultIfEmpty()                                       
                                        join exp in context.ExportDetails
-                                       on clothe.Id equals exp.ClotheId into exportedClothe
+                                       on clothe.Id equals exp.ClotheId 
+                                       into exportedClothe
 
-                                       from exp in exportedClothe.DefaultIfEmpty()                                        
+                                       from exp in exportedClothe.DefaultIfEmpty()
                                        select new 
                                        {
                                            MaMH = clothe.Id,
                                            SLNhap = (imp == null ? 0 : imp.SoLuongNhap),
-                                           SLXuat = (exp == null ? 0 : exp.SoLuongXuat),//importedClothe.ToList().Sum(x => x.SoLuongNhap),
+                                           SLXuat = (exp == null ? 0 : exp.SoLuongXuat),
                                            TonKho = clothe.TonKho,
                                            TenMH = clothe.TenMH,
                                            TinhTrangMH = clothe.TonKho < clothe.SLTonKhoToiThieu ? "Cần bổ sung!" : "Còn hàng"
@@ -55,15 +58,9 @@ namespace Acme.MenClothingShop.Storages
                                            TonKho = y.Key.TonKho,
                                            TenMH = y.Key.TenMH,
                                            TinhTrangMH = y.Key.TinhTrangMH
-                                       });
-            List<ClotheStorageDto> list = new List<ClotheStorageDto>();
+                                       }).ToListAsync();
 
-            foreach(var t in clotheStorageDtoList1)
-            {
-                list.Add(t);
-            } 
-            
-            return new PagedResultDto<ClotheStorageDto>(await context.Clothes.CountAsync(), list) ;
+            return new PagedResultDto<ClotheStorageDto>(await context.Clothes.CountAsync(), clotheStorageDtoList) ;
         }
     }
 }

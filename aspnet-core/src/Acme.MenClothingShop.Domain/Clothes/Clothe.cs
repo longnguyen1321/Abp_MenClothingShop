@@ -1,5 +1,7 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,13 @@ namespace Acme.MenClothingShop.Clothes
 {
     public class Clothe : AuditedAggregateRoot<Guid>
     {
+        internal Clothe()
+        {
+
+        }
+        internal Clothe([NotNull] Guid maMH) : base(maMH)
+        {
+        }
         public String TenMH { get; set; }
 
         public String SizeMH { get; set; }

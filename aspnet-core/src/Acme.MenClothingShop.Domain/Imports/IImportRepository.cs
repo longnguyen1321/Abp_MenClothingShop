@@ -12,5 +12,17 @@ namespace Acme.MenClothingShop.Imports
         Task InsertAsync(Import import);
 
         Task UpdateAsync(Import import);
+
+        Task<List<Import>> GetListAsync(
+            int skipCount,
+            int maxResultCount,
+            string sorting
+        );
+
+        Task<IQueryable> GetImportListToDisplay(
+            int skipCount,
+            int maxResultCount,
+            string sorting
+        );
     }
 }

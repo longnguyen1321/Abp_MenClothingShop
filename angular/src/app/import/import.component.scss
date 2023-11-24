@@ -1,32 +1,58 @@
+// *{
+  // border: 3px solid #73AD21;
+// }
 table, th, td {
     border: 1px solid black;
   }
-.tableCell1{
-  width: 100%;
+
+.w-full{
+  min-width: 100%;
 }
 
-.tableCell2{
-  width: 100%;
+.h-full{
+  min-height: 100%;
 }
 
-.selectedClothesTable{
-  width: 100%;
+.w-half-full{
+  min-width: 60%;
 }
 
-.tenMHSelected{
-  width: 20%;
+.h-half-full{
+  min-width: 60%;
 }
 
-.childComponent{
-  position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -50px;
-    margin-left: -50px;
-    width: 100px;
-    height: 100px;
+.button{
+  width: 150px;
+  height: 40px;
 }
 
-#createImportBtn{
-  
+.smallBtn{
+  width: 80px;
+  height: 40px;
+}
+
+.clothesSelectionItem{
+  margin: 0;
+  padding: 0;
+  margin: 0;
+}
+
+#left-item{
+
+}
+
+#right-item{
+
+}
+
+.clotheListTable{
+  margin: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.selectWidth{
+  max-width: 225px;
+  max-height: 50px;
+  height: 30px;
 }

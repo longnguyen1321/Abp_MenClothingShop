@@ -30,7 +30,7 @@ namespace Acme.MenClothingShop.Suppliers
 
         public async Task<Supllier> ChangeNameAsync([NotNull] Supllier supllier, [NotNull] string newSupplierName)
         {
-            if((await _suppliersRepository.FindAsync(x => x.TenNCC == supllier.TenNCC)) != null)
+            if(supllier.TenNCC != newSupplierName && (await _suppliersRepository.FindAsync(x => x.TenNCC == newSupplierName)) != null)
             {
                 throw new SupplierNameAlreadyExistException(newSupplierName);
             }

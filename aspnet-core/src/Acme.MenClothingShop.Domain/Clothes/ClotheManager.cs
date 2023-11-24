@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,20 +17,26 @@ namespace Acme.MenClothingShop.Clothes
             _clotheRepo = clotheRepo;
         }
 
-        public void UpdateClotheStorage(Clothe selectedClotheE,int soLuongThayDoi, string action)
+        public void UpdateClotheStorage(Clothe selectedClotheE,int soLuongThayDoi)
         {
-            if (action == "add")
-            {
-                selectedClotheE.TonKho += soLuongThayDoi;
-            }
-            
-            if(action == "minus")
-            {
-                selectedClotheE.TonKho -= soLuongThayDoi;
-            }
-            
+             selectedClotheE.TonKho += soLuongThayDoi;
         }
 
-        
+        public Clothe CreateSimplpeClothe([NotNull] Guid maMH, [CanBeNull] String? tenMH = "", [CanBeNull] String? sizeMH = "", [CanBeNull] int? soLuongMH = 0, [CanBeNull] int? tonKho = 0, [CanBeNull] int? sLTonKhoToiThieu = 0, [CanBeNull] ClotheType? loaiMH = 0, [CanBeNull] Decimal? giaMH = 0, [CanBeNull] ClotheMaterial chatLieuMH = 0, [CanBeNull] string? anhMH = "", [CanBeNull] string? moTaMH = "")
+        {
+            return new Clothe(maMH)
+            {
+                TenMH = tenMH,
+                SizeMH = sizeMH,
+                SoLuongMH = (int)soLuongMH,
+                TonKho = (int)tonKho,
+                SLTonKhoToiThieu = (int)sLTonKhoToiThieu,
+                LoaiMH = (ClotheType)loaiMH,
+                GiaMH = (decimal)giaMH,
+                ChatLieuMH = chatLieuMH,
+                AnhMH = anhMH,
+                MoTaMH = moTaMH
+            };
+        }
     }
 }

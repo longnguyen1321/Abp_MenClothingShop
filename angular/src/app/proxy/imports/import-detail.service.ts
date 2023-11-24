@@ -1,8 +1,6 @@
-import type { CreateManyImportDetailsDto, ImportClotheListDto } from './models';
+import type { CreateManyImportDetailsDto, ToDisplayImportDetailDto, UpdateManyImportDetailDto } from './models';
 import { RestService } from '@abp/ng.core';
-import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
-import type { GetClotheListDto } from '../clothes/models';
 
 @Injectable({
   providedIn: 'root',
@@ -18,18 +16,27 @@ export class ImportDetailService {
     },
     { apiName: this.apiName });
 
-  getClotheListByInput = (input: GetClotheListDto) =>
-    this.restService.request<any, PagedResultDto<ImportClotheListDto>>({
+  getImportDetailListToDisplayByMaMH = (maMH: string) =>
+    this.restService.request<any, ToDisplayImportDetailDto[]>({
       method: 'GET',
-      url: '/api/app/import-detail/clothe-list',
-      params: { sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+      url: '/api/app/import-detail/import-detail-list-to-display',
+      params: { maMH },
     },
     { apiName: this.apiName });
 
-  update = (maPN: string) =>
+  update = (maPN: string, input: UpdateManyImportDetailDto) =>
     this.restService.request<any, void>({
       method: 'PUT',
       url: '/api/app/import-detail',
+      params: { maPN },
+      body: input,
+    },
+    { apiName: this.apiName });
+
+  updateImportClotheStorage = (maPN: string) =>
+    this.restService.request<any, void>({
+      method: 'PUT',
+      url: '/api/app/import-detail/import-clothe-storage',
       params: { maPN },
     },
     { apiName: this.apiName });
